@@ -47,9 +47,9 @@ Aucun serveur, aucun Node.js ni commande `npm install` n'est nécessaire.
 
 ## 🎮 Fonctionnalités Principales
 
-### 🔐 0. Écran de Connexion Bouzedows XP (Au Démarrage)
+### 🔐 0. Écran de Connexion Bouzedows XP (Au Démarrage, Formatage & Redémarrage)
 * **Écran de Bienvenue Bouzedows XP Authentique** :
-  * Dès l'ouverture du jeu, l'écran bleu iconique de Bouzedows XP s'affiche avec la marguerite orange classique, le logo Microsoft Bouzedows XP et les barres bleu nuit.
+  * Dès l'ouverture du jeu, lors du formatage (Prestige) ou après avoir éteint et redémarré, l'écran bleu iconique de Bouzedows XP s'affiche avec la marguerite orange classique, le logo Microsoft Bouzedows XP et les barres bleu nuit.
 * **Saisie Automatique « Hacker Hollywood » au Clavier** :
   * Il suffit de taper n'importe quelles touches sur votre clavier pour saisir automatiquement les identifiants :
     * Nom d'utilisateur : **`Henry PC`**
@@ -58,8 +58,14 @@ Aucun serveur, aucun Node.js ni commande `npm install` n'est nécessaire.
   * Un bouton **« ⚡ Connexion Rapide (1-Clic) »** est également disponible pour se connecter instantanément en un clic.
 * **Jingle de Démarrage Bouzedows XP & « Bienvenue... »** :
   * À la validation, le statut passe en `Bienvenue...` et le **fameux carillon de démarrage de Bouzedows XP** est joué via l'API Web Audio (100% synthétisé en temps réel), avant une transition fluide vers le bureau Bouzedows.
-* **Re-verrouillage à tout moment** :
-  * Un élément **« 🔒 Fermer la session (Écran XP) »** dans le menu Démarrer permet de réafficher l'écran de bienvenue XP à n'importe quel moment sans recharger la page.
+* **Retour au Menu de Connexion à Chaque Cycle** :
+  * **Au Formatage (Format C: /U)** : Réinitialise l'OS et affiche immédiatement l'écran de bienvenue XP pour démarrer la nouvelle partie fraîchement réinstallée.
+  * **À l'Extinction et au Redémarrage** : Cliquer sur l'écran d'arrêt ou choisir « Redémarrer » dans le menu Démarrer renvoie directement au menu de connexion.
+  * **À tout moment** : Un élément **« 🔒 Fermer la session (Écran XP) »** dans le menu Démarrer permet de réafficher l'écran de bienvenue à n'importe quel moment.
+* **🎵 Musique de Fond Adaptative (Calme au Début & Accélération en Temps Réel)** :
+  * Une mélodie rétro synthétisée (accords nostalgiques Cmaj7 → Am9 → Fmaj7 → G6) démarre doucement et paisiblement lorsque l'intégrité système est à 100%.
+  * **Accélération continue avec la perte d'intégrité** : À mesure que les dégâts système augmentent (de 0% à plus de 100%+), le tempo s'accélère dynamiquement (de 65 BPM jusqu'à plus de 270 BPM en surchauffe critique), le filtre audio s'ouvre et des micro-glitchs électroniques traduisent la panique du processeur !
+  * Lors d'un formatage ou d'un redémarrage, la musique revient instantanément à son tempo calme et apaisant d'origine.
 
 ---
 

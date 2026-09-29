@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 6. Audio First Gesture Listener
     const onFirstInteraction = () => {
         window.retroAudio.ensureContext();
+        if (window.retroAudio.startBgm) {
+            window.retroAudio.startBgm();
+        }
         window.removeEventListener('click', onFirstInteraction);
         window.removeEventListener('keydown', onFirstInteraction);
     };
@@ -41,11 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 if (window.chaosApp) window.chaosApp.open();
             }, 300);
+            if (window.retroAudio && window.retroAudio.startBgm) {
+                window.retroAudio.startBgm();
+            }
         });
     } else {
         setTimeout(() => {
             if (window.chaosApp) window.chaosApp.open();
         }, 400);
+        if (window.retroAudio && window.retroAudio.startBgm) {
+            window.retroAudio.startBgm();
+        }
     }
 
     // 8. Main Game Loop (60 FPS)
@@ -362,7 +371,11 @@ function setupStartMenu() {
     });
     bindMenu('#sm-item-restart', () => {
         if (confirm("Voulez-vous redémarrer le système d'exploitation Bouzedows ?")) {
-            window.location.reload();
+            if (window.xpLoginScreen) {
+                window.xpLoginScreen.lock();
+            } else {
+                window.location.reload();
+            }
         }
     });
     bindMenu('#sm-item-shutdown', () => triggerShutDownScreen());
@@ -378,10 +391,14 @@ function triggerShutDownScreen() {
         shutScreen.classList.remove('hidden');
         window.retroAudio.playAsterisk();
 
-        // Clicking anywhere on shutdown screen restarts
+        // Clicking anywhere on shutdown screen restarts to login screen
         shutScreen.onclick = () => {
             shutScreen.classList.add('hidden');
-            window.retroAudio.playStartup();
+            if (window.xpLoginScreen) {
+                window.xpLoginScreen.lock();
+            } else {
+                window.retroAudio.playStartup();
+            }
         };
     }
 }

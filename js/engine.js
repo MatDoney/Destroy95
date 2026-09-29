@@ -654,16 +654,19 @@ class ClickerEngine {
         this.recalcTotals();
         this.save();
 
-        if (window.retroAudio) {
-            window.retroAudio.playStartup();
-        }
-
         if (window.glitchController) {
             window.glitchController.hideBsod();
         }
 
         if (window.virusEffects) {
             window.virusEffects.resetAll();
+        }
+
+        // Return to Bouzedows XP login screen on format
+        if (window.xpLoginScreen) {
+            window.xpLoginScreen.lock();
+        } else if (window.retroAudio) {
+            window.retroAudio.playStartup();
         }
 
         return true;

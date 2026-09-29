@@ -17,6 +17,57 @@ class RetroAudioEngine {
         this.fanFilterNode = null;
         this.isFanRunning = false;
         this.fanBaseVolume = 0.15;
+
+        // Dynamic Adaptive Background Music (BGM)
+        this.bgmRunning = false;
+        this.bgmTimer = null;
+        this.bgmStepIndex = 0;
+        this.bgmBaseVolume = 0.08;
+        this.bgmGainNode = null;
+        this.bgmFilterNode = null;
+
+        // 32-step peaceful retro progression (Cmaj7 -> Am9 -> Fmaj7 -> G6)
+        this.bgmPattern = [
+            // Bar 1: Cmaj7
+            { lead: 261.63, bass: 130.81 }, // C4, C3
+            { lead: 329.63 },               // E4
+            { lead: 392.00 },               // G4
+            { lead: 493.88 },               // B4
+            { lead: 523.25, bass: 196.00 }, // C5, G3
+            { lead: 493.88 },               // B4
+            { lead: 392.00 },               // G4
+            { lead: 329.63 },               // E4
+
+            // Bar 2: Am9
+            { lead: 261.63, bass: 110.00 }, // C4, A2
+            { lead: 329.63 },               // E4
+            { lead: 440.00 },               // A4
+            { lead: 523.25 },               // C5
+            { lead: 659.25, bass: 164.81 }, // E5, E3
+            { lead: 523.25 },               // C5
+            { lead: 440.00 },               // A4
+            { lead: 329.63 },               // E4
+
+            // Bar 3: Fmaj7
+            { lead: 220.00, bass: 87.31 },  // A3, F2
+            { lead: 261.63 },               // C4
+            { lead: 349.23 },               // F4
+            { lead: 440.00 },               // A4
+            { lead: 523.25, bass: 130.81 }, // C5, C3
+            { lead: 440.00 },               // A4
+            { lead: 349.23 },               // F4
+            { lead: 261.63 },               // C4
+
+            // Bar 4: G6
+            { lead: 246.94, bass: 98.00 },  // B3, G2
+            { lead: 293.66 },               // D4
+            { lead: 392.00 },               // G4
+            { lead: 493.88 },               // B4
+            { lead: 587.33, bass: 146.83 }, // D5, D3
+            { lead: 493.88 },               // B4
+            { lead: 392.00 },               // G4
+            { lead: 293.66 }                // D4
+        ];
     }
 
     init() {
@@ -28,6 +79,16 @@ class RetroAudioEngine {
             this.masterGain = this.ctx.createGain();
             this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.masterVolume, this.ctx.currentTime);
             this.masterGain.connect(this.ctx.destination);
+
+            // BGM Gain & Filter routing
+            this.bgmGainNode = this.ctx.createGain();
+            this.bgmGainNode.gain.setValueAtTime(this.isMuted ? 0 : this.bgmBaseVolume, this.ctx.currentTime);
+            this.bgmFilterNode = this.ctx.createBiquadFilter();
+            this.bgmFilterNode.type = 'lowpass';
+            this.bgmFilterNode.frequency.setValueAtTime(900, this.ctx.currentTime);
+            this.bgmFilterNode.connect(this.bgmGainNode);
+            this.bgmGainNode.connect(this.masterGain);
+
             this.initialized = true;
         } catch (e) {
             console.warn("Web Audio not supported or blocked", e);
@@ -50,6 +111,9 @@ class RetroAudioEngine {
         }
         if (this.fanGainNode && this.ctx) {
             this.fanGainNode.gain.setValueAtTime(this.isMuted ? 0 : this.fanBaseVolume, this.ctx.currentTime);
+        }
+        if (this.bgmGainNode && this.ctx) {
+            this.bgmGainNode.gain.setValueAtTime(this.isMuted ? 0 : this.bgmBaseVolume, this.ctx.currentTime);
         }
         return this.isMuted;
     }
@@ -831,6 +895,142 @@ class RetroAudioEngine {
         this.isFanRunning = false;
         this.fanNoiseNode = null;
         this.fanOscNode = null;
+    }
+
+    // Dynamic Adaptive Background Music (BGM)
+    startBgm() {
+        if (this.bgmRunning) return;
+        this.ensureContext();
+        if (!this.ctx) return;
+        this.bgmRunning = true;
+        this.bgmStepIndex = 0;
+        this.scheduleNextBgmStep();
+    }
+
+    stopBgm() {
+        this.bgmRunning = false;
+        if (this.bgmTimer) {
+            clearTimeout(this.bgmTimer);
+            this.bgmTimer = null;
+        }
+    }
+
+    scheduleNextBgmStep() {
+        if (!this.bgmRunning || !this.ctx) return;
+
+        // Current system damage & integrity from engine
+        const damage = (window.gameEngine && typeof window.gameEngine.systemDamage === 'number')
+            ? window.gameEngine.systemDamage
+            : 0;
+
+        // Dynamic acceleration:
+        // Integrity 100% (damage 0%): 230ms step interval (~65 BPM, calm, sweet)
+        // Damage 50%: 155ms
+        // Damage 100% (Integrity 0% / BSOD): 80ms (~187 BPM)
+        // Damage 150%+: 55ms (~270 BPM, frantic chiptune panic!)
+        const stepInterval = Math.max(55, Math.round(230 - (damage * 1.5)));
+
+        // Dynamic lowpass filter cutoff: opens up as system collapses
+        if (this.bgmFilterNode) {
+            const cutoff = Math.min(2800, 900 + (damage * 18));
+            this.bgmFilterNode.frequency.setTargetAtTime(cutoff, this.ctx.currentTime, 0.05);
+        }
+
+        this.playBgmStep(this.bgmStepIndex, damage, stepInterval / 1000);
+
+        this.bgmStepIndex = (this.bgmStepIndex + 1) % this.bgmPattern.length;
+
+        this.bgmTimer = setTimeout(() => {
+            this.scheduleNextBgmStep();
+        }, stepInterval);
+    }
+
+    playBgmStep(step, damage, dur) {
+        if (!this.ctx || this.isMuted) return;
+        const now = this.ctx.currentTime;
+        const item = this.bgmPattern[step];
+        if (!item) return;
+
+        const gate = Math.max(0.04, dur * 0.85);
+
+        // Lead melody voice
+        if (item.lead) {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            // At high corruption, occasional sawtooth or glitch detune
+            osc.type = (damage > 70 && Math.random() < 0.3) ? 'sawtooth' : 'triangle';
+            let freq = item.lead;
+            if (damage > 50) {
+                const wobble = (Math.random() - 0.5) * (damage * 0.2);
+                freq += wobble;
+            }
+            osc.frequency.setValueAtTime(freq, now);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(0.07, now + 0.012);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + gate);
+
+            osc.connect(gain);
+            gain.connect(this.bgmFilterNode || this.masterGain);
+
+            osc.start(now);
+            osc.stop(now + gate + 0.02);
+        }
+
+        // Bass voice
+        if (item.bass) {
+            const bOsc = this.ctx.createOscillator();
+            const bGain = this.ctx.createGain();
+
+            bOsc.type = 'sine';
+            bOsc.frequency.setValueAtTime(item.bass, now);
+
+            const bGate = Math.min(0.4, dur * 1.6);
+            bGain.gain.setValueAtTime(0.001, now);
+            bGain.gain.linearRampToValueAtTime(0.10, now + 0.02);
+            bGain.gain.exponentialRampToValueAtTime(0.001, now + bGate);
+
+            bOsc.connect(bGain);
+            bGain.connect(this.bgmFilterNode || this.masterGain);
+
+            bOsc.start(now);
+            bOsc.stop(now + bGate + 0.02);
+        }
+
+        // Subtle rhythm percussion tap at higher damage (ticking clock / alarm)
+        if (damage >= 25 && (step % 2 === 1 || damage >= 80)) {
+            this.playBgmPercussion(now, damage);
+        }
+    }
+
+    playBgmPercussion(time, damage) {
+        if (!this.ctx || this.isMuted) return;
+        try {
+            const bufferSize = Math.max(64, Math.floor(this.ctx.sampleRate * 0.015));
+            const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * (1 - (i / bufferSize));
+            }
+            const noise = this.ctx.createBufferSource();
+            noise.buffer = buffer;
+
+            const filter = this.ctx.createBiquadFilter();
+            filter.type = 'highpass';
+            filter.frequency.setValueAtTime(3200, time);
+
+            const gain = this.ctx.createGain();
+            const vol = Math.min(0.04, 0.01 + (damage * 0.00025));
+            gain.gain.setValueAtTime(vol, time);
+            gain.gain.exponentialRampToValueAtTime(0.001, time + 0.015);
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(this.masterGain);
+
+            noise.start(time);
+        } catch (e) { }
     }
 
     // Mechanical 3.5" Floppy Disk seek sound

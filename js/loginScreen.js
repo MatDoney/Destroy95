@@ -255,6 +255,24 @@ class XpLoginScreen {
         this.activeField = 'pseudo';
         this.updateDisplay();
 
+        // Close any open popups and start menu
+        if (window.popupManager) {
+            window.popupManager.closeAllPopups();
+        }
+        const startMenu = document.getElementById('start-menu');
+        if (startMenu) startMenu.classList.add('hidden');
+        const startBtn = document.getElementById('start-button');
+        if (startBtn) startBtn.classList.remove('active');
+
+        // Hide BSOD and shutdown screen
+        if (window.glitchController) {
+            window.glitchController.hideBsod();
+        }
+        const shutScreen = document.getElementById('shutdown-screen');
+        if (shutScreen) {
+            shutScreen.classList.add('hidden');
+        }
+
         if (this.inputGroup) {
             this.inputGroup.classList.remove('hidden');
         }
