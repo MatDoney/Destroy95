@@ -1,5 +1,5 @@
 /**
- * Main Application Orchestrator for Windows 95 Destruction Simulator
+ * Main Application Orchestrator for Bouzedows 95 Destruction Simulator
  * Handles desktop icons, start menu, tray controls, audio toggles, and game loop.
  */
 
@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', onFirstInteraction);
     window.addEventListener('keydown', onFirstInteraction);
 
-    // 7. Initialize Windows XP Login Screen
+    // 7. Initialize Bouzedows XP Login Screen
     if (window.xpLoginScreen) {
         window.xpLoginScreen.init(() => {
-            // Callback executed after user logs in through Windows XP Welcome Screen
+            // Callback executed after user logs in through Bouzedows XP Welcome Screen
             setTimeout(() => {
                 if (window.chaosApp) window.chaosApp.open();
             }, 300);
@@ -84,7 +84,7 @@ function setupDesktopShortcuts() {
     const shortcuts = [
         {
             id: 'sc-chaos',
-            name: 'Destructeur de Windows',
+            name: 'Destructeur de Bouzedows',
             icon: RetroIcons.chaosEngine,
             action: () => window.chaosApp.open()
         },
@@ -359,7 +359,7 @@ function setupStartMenu() {
         if (window.xpLoginScreen) window.xpLoginScreen.lock();
     });
     bindMenu('#sm-item-restart', () => {
-        if (confirm("Voulez-vous redémarrer le système d'exploitation Windows 95 ?")) {
+        if (confirm("Voulez-vous redémarrer le système d'exploitation Bouzedows 95 ?")) {
             window.location.reload();
         }
     });

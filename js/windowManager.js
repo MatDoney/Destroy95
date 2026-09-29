@@ -1,5 +1,5 @@
 /**
- * Windows 95 Window Manager
+ * Bouzedows 95 Window Manager
  * Handles dragging, z-index, minimize/maximize/close, taskbar buttons,
  * error dialogue generator, and retro window-trail bugs!
  */
@@ -223,7 +223,7 @@ class WindowManager {
         });
     }
 
-    // Windows 95 GDI Solitaire / Error Dragging Trail Bug!
+    // Bouzedows 95 GDI Solitaire / Error Dragging Trail Bug!
     drawWindowTrail(el) {
         if (!this.trailCtx) return;
         const rect = el.getBoundingClientRect();
@@ -354,14 +354,14 @@ class WindowManager {
             "Le composant OLE32.DLL semble s'être désintégré sous l'effet d'une charge thermique anormale.",
             "Impossible d'écrire sur le lecteur C: (Le disque dur émet un bruit de friture suspect).",
             "WINSOCK.DLL a rencontré une surcharge de paquets ICQ non sollicités.",
-            "Exception non gérée 0xDEADBEEF : Le Registre de Windows a fondu.",
+            "Exception non gérée 0xDEADBEEF : Le Registre de Bouzedows a fondu.",
             "L'ordinateur va maintenant exécuter une opération non autorisée et être arrêté."
         ];
 
         const titles = [
             "Erreur système critique",
             "Violation d'accès Explorer",
-            "Alerte de sécurité Windows",
+            "Alerte de sécurité Bouzedows",
             "KERNEL32.DLL Défaillance",
             "Pilote d'affichage corrompu",
             "Panique de la mémoire virtuelle"
