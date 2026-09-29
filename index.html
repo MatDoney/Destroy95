@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Windows 95 - Simulateur de Destruction & Clicker Rétro</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- CRT Monitor & Scanlines Overlay -->
+    <div id="crt-overlay" class="crt-filter"></div>
+
+    <!-- Window Trail Canvas (for retro GDI drag stamp bug) -->
+    <canvas id="window-trail-canvas"></canvas>
+
+    <!-- Main Desktop Environment -->
+    <main id="desktop">
+        <!-- Desktop Shortcuts Grid -->
+        <div id="desktop-icons-grid" class="desktop-grid"></div>
+
+        <!-- Notification container for achievements / alerts -->
+        <div id="retro-notifications"></div>
+    </main>
+
+    <!-- Start Menu -->
+    <nav id="start-menu" class="win-start-menu hidden">
+        <div class="start-menu-sidebar">
+            <span class="start-brand">Windows<span>95</span></span>
+        </div>
+        <div class="start-menu-items">
+            <div class="start-item" id="sm-item-chaos">
+                <span class="sm-icon">💥</span>
+                <span class="sm-text">Destructeur de Windows (Clicker)</span>
+            </div>
+            <div class="start-divider"></div>
+            <div class="start-item" id="sm-item-pinball">
+                <span class="sm-icon">🚀</span>
+                <span class="sm-text">3D Pinball Space Cadet</span>
+            </div>
+            <div class="start-item" id="sm-item-minesweeper">
+                <span class="sm-icon">💣</span>
+                <span class="sm-text">Démineur</span>
+            </div>
+            <div class="start-item" id="sm-item-paint">
+                <span class="sm-icon">🎨</span>
+                <span class="sm-text">Paint</span>
+            </div>
+            <div class="start-item" id="sm-item-defrag">
+                <span class="sm-icon">🗂️</span>
+                <span class="sm-text">Défragmenteur de disque</span>
+            </div>
+            <div class="start-item" id="sm-item-gallery">
+                <span class="sm-icon">🖼️</span>
+                <span class="sm-text">Galerie Photos 95</span>
+            </div>
+            <div class="start-item" id="sm-item-notepad">
+                <span class="sm-icon">📝</span>
+                <span class="sm-text">Bloc-notes</span>
+            </div>
+            <div class="start-item" id="sm-item-ie">
+                <span class="sm-icon">🌐</span>
+                <span class="sm-text">Internet Explorer 5.0</span>
+            </div>
+            <div class="start-divider"></div>
+            <div class="start-item" id="sm-item-clippy">
+                <span class="sm-icon">📎</span>
+                <span class="sm-text">Appeler Clippy</span>
+            </div>
+            <div class="start-item" id="sm-item-popups">
+                <span class="sm-icon">🛑</span>
+                <span class="sm-text">Fermer tous les Pop-ups (AdBlock 95)</span>
+            </div>
+            <div class="start-item" id="sm-item-restart">
+                <span class="sm-icon">🔄</span>
+                <span class="sm-text">Redémarrer le système...</span>
+            </div>
+            <div class="start-item" id="sm-item-shutdown">
+                <span class="sm-icon">⏻</span>
+                <span class="sm-text">Arrêter le système...</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Windows Taskbar -->
+    <footer id="taskbar" class="win-taskbar">
+        <!-- Start Button -->
+        <button id="start-button" class="start-btn">
+            <span class="start-logo">
+                <svg viewBox="0 0 16 16" width="16" height="16" fill="none">
+                    <rect x="1" y="2" width="6" height="5" fill="#ff0000" />
+                    <rect x="8" y="2" width="6" height="5" fill="#00aa00" />
+                    <rect x="1" y="8" width="6" height="5" fill="#0000ff" />
+                    <rect x="8" y="8" width="6" height="5" fill="#ffcc00" />
+                </svg>
+            </span>
+            <span class="start-text">Démarrer</span>
+        </button>
+
+        <!-- Running Tasks -->
+        <div id="taskbar-tasks" class="taskbar-window-list"></div>
+
+        <!-- System Tray -->
+        <div id="system-tray" class="win-tray">
+            <button class="tray-action-btn" id="tray-popups-btn" title="Fermer tous les pop-ups (AdBlock 95)">PUB ✕</button>
+            <button class="tray-action-btn" id="tray-degauss-btn" title="Démagnétiser le moniteur cathodique (Degauss)">DÉGAUSS</button>
+            <button class="tray-action-btn" id="tray-crt-btn" title="Activer / Désactiver les lignes CRT">CRT</button>
+            <button class="tray-btn" id="tray-sound-btn" title="Activer / Désactiver le son"></button>
+            <div class="tray-clock" id="taskbar-clock-text">18:45</div>
+        </div>
+    </footer>
+
+    <!-- Blue Screen of Death (BSOD) Takeover -->
+    <div id="bsod-screen" class="bsod-overlay hidden" tabindex="0">
+        <div class="bsod-inner">
+            <div class="bsod-header"><span class="bsod-title-box">Windows</span></div>
+            <p>Une erreur fatale est survenue à l'adresse 0028:C0011E36 dans VXD VMM(01) + 00010E36.</p>
+            <p>Le sous-système Windows et les applications ont été entièrement détruits par une avalanche de virus et de corruptions mémoires.</p>
+            <br>
+            <p>* Appuyez sur n'importe quelle touche pour formater le disque et réinstaller Windows.</p>
+            <p>* Le système redémarrera avec un bonus permanent de silicium surchauffé.</p>
+            <br>
+            <div class="bsod-bonus-text" id="bsod-prestige-gain">Bonus de formatage : +1 Processeur Surchauffé (+25% DPS)</div>
+            <br>
+            <div class="bsod-cursor-row">
+                <button class="win-btn bsod-btn" id="bsod-reboot-btn">FORMATER C:\ ET REDÉMARRER WINDOWS</button>
+                <span class="bsod-blink">_</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shutdown Safe Screen (Classic Orange Screen) -->
+    <div id="shutdown-screen" class="shutdown-overlay hidden">
+        <div class="shutdown-text">
+            Vous pouvez maintenant éteindre<br>votre ordinateur en toute sécurité.
+        </div>
+        <div class="shutdown-sub">(Cliquez n'importe où sur l'écran pour redémarrer Windows)</div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/audio.js"></script>
+    <script src="js/icons.js"></script>
+    <script src="js/engine.js"></script>
+    <script src="js/windowManager.js"></script>
+    <script src="js/glitch.js"></script>
+    <script src="js/apps/minesweeper.js"></script>
+    <script src="js/apps/pinball.js"></script>
+    <script src="js/apps/paint.js"></script>
+    <script src="js/apps/defrag.js"></script>
+    <script src="js/apps/gallery.js"></script>
+    <script src="js/apps/notepad.js"></script>
+    <script src="js/apps/browser.js"></script>
+    <script src="js/apps/clippy.js"></script>
+    <script src="js/apps/popupStorm.js"></script>
+    <script src="js/apps/chaosApp.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

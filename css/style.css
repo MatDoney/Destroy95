@@ -1,0 +1,2091 @@
+/* ==========================================================================
+   Windows 95 Destruction Simulator & Clicker - Core Retro Design System
+   ========================================================================== */
+
+:root {
+    --win-gray: #c0c0c0;
+    --win-light: #ffffff;
+    --win-dark: #808080;
+    --win-black: #000000;
+    --win-desktop: #008080;
+    --win-blue-dark: #000080;
+    --win-blue-light: #1084d0;
+    --win-inactive-dark: #7f7f7f;
+    --win-inactive-light: #b5b5b5;
+    --win-font: "Segoe UI", "Tahoma", "MS Sans Serif", Geneva, sans-serif;
+    --win-mono: "Courier New", Courier, monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--win-font);
+    font-size: 11px;
+    background-color: var(--win-desktop);
+    color: var(--win-black);
+}
+
+/* ==========================================================================
+   CRT Monitor Overlay, Scanlines & Degauss Effects
+   ========================================================================== */
+
+.crt-filter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 99999;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    background-size: 100% 3px, 4px 100%;
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.45);
+    transition: opacity 0.3s;
+}
+
+.crt-filter.disabled {
+    display: none;
+}
+
+/* Degauss magnetic coil wobble animation */
+@keyframes degaussWobble {
+    0% { transform: scale(1) skew(0deg); filter: contrast(1) hue-rotate(0deg); }
+    10% { transform: scale(1.06, 0.95) skew(5deg); filter: contrast(2.5) hue-rotate(90deg) brightness(1.5); }
+    25% { transform: scale(0.96, 1.05) skew(-6deg); filter: contrast(2) hue-rotate(180deg); }
+    40% { transform: scale(1.04, 0.97) skew(4deg); filter: contrast(1.7) hue-rotate(270deg); }
+    60% { transform: scale(0.98, 1.02) skew(-2deg); filter: contrast(1.4) hue-rotate(360deg); }
+    80% { transform: scale(1.01, 0.99) skew(1deg); filter: contrast(1.1); }
+    100% { transform: scale(1) skew(0deg); filter: contrast(1); }
+}
+
+body.degauss-active {
+    animation: degaussWobble 0.95s ease-out;
+}
+
+/* Screen Shake effect */
+@keyframes screenShakeAnim {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-5px, 4px); }
+    40% { transform: translate(5px, -3px); }
+    60% { transform: translate(-3px, 2px); }
+    80% { transform: translate(3px, -1px); }
+    100% { transform: translate(0, 0); }
+}
+
+#desktop.screen-shake {
+    animation: screenShakeAnim 0.35s ease-out;
+}
+
+/* Progressive Glitch stages */
+body.glitch-stage-1 .window-title-text {
+    letter-spacing: 0.5px;
+}
+
+body.glitch-stage-2 {
+    filter: contrast(1.08) saturate(1.15);
+}
+
+body.glitch-stage-3 {
+    filter: contrast(1.22) saturate(1.35) hue-rotate(20deg);
+}
+
+body.glitch-stage-4 {
+    filter: contrast(1.4) saturate(1.7) hue-rotate(60deg);
+    animation: screenShakeAnim 1.6s infinite ease-in-out;
+}
+
+body.glitch-stage-5 {
+    filter: contrast(1.6) saturate(2.1) hue-rotate(130deg);
+    animation: screenShakeAnim 0.7s infinite ease-in-out;
+}
+
+body.glitch-stage-apocalypse {
+    filter: contrast(1.9) saturate(2.8) hue-rotate(220deg) invert(0.12);
+    animation: screenShakeAnim 0.35s infinite ease-in-out;
+}
+
+/* Window Drag Trail Canvas (GDI Stamp Bug) */
+#window-trail-canvas {
+    display: none;
+}
+
+/* ==========================================================================
+   Desktop Environment
+   ========================================================================== */
+
+#desktop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 30px);
+    overflow: hidden;
+    background-color: var(--win-desktop);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.desktop-grid {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    height: 100%;
+    padding: 12px;
+    gap: 16px 20px;
+    z-index: 20;
+    position: relative;
+}
+
+.desktop-shortcut {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 76px;
+    text-align: center;
+    cursor: pointer;
+    padding: 4px;
+    border: 1px dotted transparent;
+    transition: transform 0.1s ease;
+}
+
+.desktop-shortcut:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.desktop-shortcut.selected {
+    background-color: #000080;
+    border-color: #ffff00;
+}
+
+.desktop-shortcut.selected .shortcut-label {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+.shortcut-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shortcut-label {
+    color: #ffffff;
+    font-size: 11px;
+    line-height: 1.2;
+    padding: 1px 3px;
+    text-shadow: 1px 1px 1px #000000;
+    word-break: break-word;
+}
+
+/* ==========================================================================
+   Retro Beveled Buttons & Windows Components
+   ========================================================================== */
+
+.win-btn {
+    background-color: var(--win-gray);
+    color: var(--win-black);
+    font-family: var(--win-font);
+    font-size: 11px;
+    border-top: 2px solid var(--win-light);
+    border-left: 2px solid var(--win-light);
+    border-right: 2px solid var(--win-black);
+    border-bottom: 2px solid var(--win-black);
+    box-shadow: inset 1px 1px 0px var(--win-light), inset -1px -1px 0px var(--win-dark);
+    padding: 3px 10px;
+    cursor: pointer;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.win-btn:active, .win-btn.active {
+    border-top: 2px solid var(--win-black);
+    border-left: 2px solid var(--win-black);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    box-shadow: inset 1px 1px 0px var(--win-dark), inset -1px -1px 0px var(--win-light);
+    padding: 4px 9px 2px 11px;
+}
+
+.win-btn:disabled {
+    color: var(--win-dark);
+    text-shadow: 1px 1px 0px var(--win-light);
+    cursor: not-allowed;
+    border-color: var(--win-dark);
+}
+
+.win-input, .win-select {
+    background-color: #ffffff;
+    color: #000000;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    box-shadow: inset 1px 1px 0px var(--win-black);
+    font-family: var(--win-font);
+    font-size: 11px;
+    padding: 3px 5px;
+    outline: none;
+}
+
+/* ==========================================================================
+   Windows 95 Window Frame Architecture
+   ========================================================================== */
+
+.retro-window {
+    position: absolute;
+    background-color: var(--win-gray);
+    border-top: 2px solid var(--win-light);
+    border-left: 2px solid var(--win-light);
+    border-right: 2px solid var(--win-black);
+    border-bottom: 2px solid var(--win-black);
+    box-shadow: inset 1px 1px 0px var(--win-light), inset -1px -1px 0px var(--win-dark), 2px 2px 4px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    min-width: 200px;
+    min-height: 120px;
+    z-index: 100;
+}
+
+.retro-window.maximized {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 30px) !important;
+}
+
+.window-title-bar {
+    height: 22px;
+    background: linear-gradient(90deg, var(--win-inactive-dark), var(--win-inactive-light));
+    color: #dcdcdc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 3px;
+    cursor: move;
+    font-weight: bold;
+}
+
+.retro-window.active .window-title-bar {
+    background: linear-gradient(90deg, var(--win-blue-dark), var(--win-blue-light));
+    color: #ffffff;
+}
+
+.window-title-left {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding-left: 2px;
+}
+
+.window-title-icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.window-title-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.window-title-text {
+    font-size: 11px;
+    letter-spacing: 0.3px;
+}
+
+.window-controls {
+    display: flex;
+    gap: 2px;
+}
+
+.win-btn-min, .win-btn-max, .win-btn-close {
+    width: 16px;
+    height: 14px;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+}
+
+.win-btn-close {
+    margin-left: 2px;
+}
+
+.window-body {
+    flex: 1;
+    overflow: auto;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   Taskbar & Start Menu
+   ========================================================================== */
+
+.win-taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 30px;
+    background-color: var(--win-gray);
+    border-top: 2px solid var(--win-light);
+    display: flex;
+    align-items: center;
+    padding: 2px 3px;
+    z-index: 9999;
+}
+
+.start-btn {
+    height: 24px;
+    background-color: var(--win-gray);
+    border-top: 2px solid var(--win-light);
+    border-left: 2px solid var(--win-light);
+    border-right: 2px solid var(--win-black);
+    border-bottom: 2px solid var(--win-black);
+    box-shadow: inset 1px 1px 0px var(--win-light), inset -1px -1px 0px var(--win-dark);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: var(--win-font);
+    font-size: 11px;
+}
+
+.start-btn:active, .start-btn.active {
+    border-top: 2px solid var(--win-black);
+    border-left: 2px solid var(--win-black);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    box-shadow: inset 1px 1px 0px var(--win-dark), inset -1px -1px 0px var(--win-light);
+    background-color: #dcdcdc;
+}
+
+.taskbar-window-list {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 6px;
+    overflow-x: auto;
+}
+
+.taskbar-item {
+    height: 22px;
+    max-width: 160px;
+    min-width: 80px;
+    background-color: var(--win-gray);
+    border-top: 2px solid var(--win-light);
+    border-left: 2px solid var(--win-light);
+    border-right: 2px solid var(--win-black);
+    border-bottom: 2px solid var(--win-black);
+    box-shadow: inset 1px 1px 0px var(--win-light), inset -1px -1px 0px var(--win-dark);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 6px;
+    cursor: pointer;
+    font-family: var(--win-font);
+    font-size: 11px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.taskbar-item.active {
+    border-top: 2px solid var(--win-black);
+    border-left: 2px solid var(--win-black);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    background: #e8e8e8;
+    box-shadow: inset 1px 1px 0px var(--win-dark);
+    font-weight: bold;
+}
+
+.task-icon {
+    width: 14px;
+    height: 14px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.task-icon svg {
+    width: 14px;
+    height: 14px;
+}
+
+.win-tray {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 22px;
+    padding: 0 6px;
+    border-top: 1px solid var(--win-dark);
+    border-left: 1px solid var(--win-dark);
+    border-right: 1px solid var(--win-light);
+    border-bottom: 1px solid var(--win-light);
+    margin-left: 6px;
+}
+
+.tray-action-btn {
+    background: none;
+    border: 1px solid var(--win-dark);
+    font-size: 9px;
+    padding: 1px 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tray-action-btn:hover {
+    background-color: #ffffff;
+}
+
+.tray-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.tray-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.tray-clock {
+    font-size: 11px;
+    letter-spacing: 0.5px;
+}
+
+/* Start Menu Popup */
+.win-start-menu {
+    position: fixed;
+    bottom: 30px;
+    left: 2px;
+    width: 230px;
+    background-color: var(--win-gray);
+    border-top: 2px solid var(--win-light);
+    border-left: 2px solid var(--win-light);
+    border-right: 2px solid var(--win-black);
+    border-bottom: 2px solid var(--win-black);
+    box-shadow: inset 1px 1px 0px var(--win-light), inset -1px -1px 0px var(--win-dark), 4px 4px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    z-index: 10000;
+}
+
+.win-start-menu.hidden {
+    display: none;
+}
+
+.start-menu-sidebar {
+    width: 26px;
+    background: linear-gradient(180deg, #000080, #1084d0);
+    display: flex;
+    align-items: flex-end;
+    padding: 8px 4px;
+}
+
+.start-brand {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 14px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    letter-spacing: 2px;
+}
+
+.start-brand span {
+    color: #ffcc00;
+}
+
+.start-menu-items {
+    flex: 1;
+    padding: 3px 2px;
+    display: flex;
+    flex-direction: column;
+}
+
+.start-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    cursor: pointer;
+}
+
+.start-item:hover {
+    background-color: #000080;
+    color: #ffffff;
+}
+
+.start-divider {
+    height: 1px;
+    background-color: var(--win-dark);
+    border-bottom: 1px solid var(--win-light);
+    margin: 3px 4px;
+}
+
+/* ==========================================================================
+   Destruction Clicker / Virus Workshop Window
+   ========================================================================== */
+
+.chaos-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 8px;
+}
+
+.chaos-top-status {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.chaos-metric-box {
+    background-color: #ffffff;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chaos-metric-lbl {
+    font-size: 9px;
+    color: var(--win-dark);
+    font-weight: bold;
+}
+
+.chaos-metric-val {
+    font-size: 13px;
+    font-weight: bold;
+    color: #b00000;
+}
+
+.chaos-damage-bar-section {
+    background-color: #e0e0e0;
+    border: 1px solid var(--win-dark);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.damage-label-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+}
+
+.damage-bar-track {
+    width: 100%;
+    height: 18px;
+    background-color: #ffffff;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    overflow: hidden;
+}
+
+.damage-bar-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #00aa00;
+    transition: width 0.2s ease, background-color 0.3s;
+}
+
+.damage-status-alert {
+    font-size: 10px;
+    font-weight: bold;
+    color: #880000;
+}
+
+/* Big Target Destruction Button */
+.chaos-click-zone {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+}
+
+.chaos-big-target-btn {
+    width: 100%;
+    height: 72px;
+    background: linear-gradient(180deg, #ffdddd, #ff8888);
+    border-top: 3px solid var(--win-light);
+    border-left: 3px solid var(--win-light);
+    border-right: 3px solid var(--win-black);
+    border-bottom: 3px solid var(--win-black);
+    box-shadow: inset 1px 1px 0px var(--win-light), inset -1px -1px 0px var(--win-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.05s;
+}
+
+.chaos-big-target-btn:active, .chaos-big-target-btn.pressed-pulse {
+    border-top: 3px solid var(--win-black);
+    border-left: 3px solid var(--win-black);
+    border-right: 3px solid var(--win-light);
+    border-bottom: 3px solid var(--win-light);
+    transform: scale(0.985);
+    background: linear-gradient(180deg, #ff6666, #ffaaaa);
+}
+
+.target-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+}
+
+.target-icon svg {
+    width: 42px;
+    height: 42px;
+}
+
+.target-text {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.target-title {
+    font-size: 15px;
+    font-weight: bold;
+    color: #990000;
+    letter-spacing: 0.5px;
+}
+
+.target-sub {
+    font-size: 10px;
+    color: #333333;
+    font-weight: bold;
+}
+
+/* Tabs Bar */
+.chaos-tabs-bar {
+    display: flex;
+    gap: 3px;
+    border-bottom: 1px solid var(--win-dark);
+}
+
+.tab-btn {
+    padding: 4px 10px;
+    font-size: 10px;
+    border-bottom: none;
+}
+
+.tab-btn.active {
+    font-weight: bold;
+    background-color: var(--win-gray);
+    position: relative;
+    top: 1px;
+}
+
+.chaos-tab-content {
+    flex: 1;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    padding: 4px;
+}
+
+/* Upgrades Shop List */
+.shop-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.shop-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px;
+    background-color: #f7f7f7;
+    border: 1px solid #d0d0d0;
+}
+
+.shop-item.affordable {
+    background-color: #eef7ee;
+    border-color: #a0d0a0;
+}
+
+.shop-item.locked {
+    opacity: 0.65;
+}
+
+.shop-item.purchased {
+    background-color: #e8e8e8;
+    opacity: 0.7;
+}
+
+.shop-item-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shop-item-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.shop-item-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.shop-item-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.shop-item-desc {
+    font-size: 10px;
+    color: #444444;
+}
+
+.shop-item-sub {
+    font-size: 10px;
+    color: #006600;
+    font-weight: bold;
+}
+
+.shop-buy-btn {
+    min-width: 90px;
+    line-height: 1.2;
+    text-align: center;
+}
+
+/* Prestige Panel */
+.prestige-panel {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.prestige-panel h3 {
+    color: #aa0000;
+    font-size: 13px;
+}
+
+.prestige-stats-box {
+    background-color: #f0f0f0;
+    border: 1px solid var(--win-dark);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11px;
+}
+
+.prestige-big-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #990000;
+}
+
+.prestige-req-hint {
+    font-size: 10px;
+    color: #666666;
+    margin-top: 4px;
+}
+
+/* Floating click text */
+.float-click-text {
+    position: fixed;
+    color: #ff0000;
+    font-weight: bold;
+    font-size: 14px;
+    pointer-events: none;
+    z-index: 999999;
+    text-shadow: 1px 1px 0px #ffffff, -1px -1px 0px #ffffff;
+    animation: floatUpFade 1.1s forwards ease-out;
+}
+
+@keyframes floatUpFade {
+    0% { transform: translate(-50%, 0) scale(0.9); opacity: 1; }
+    50% { transform: translate(-50%, -25px) scale(1.15); opacity: 1; }
+    100% { transform: translate(-50%, -50px) scale(0.9); opacity: 0; }
+}
+
+/* ==========================================================================
+   Démineur (Minesweeper) Styles
+   ========================================================================== */
+
+.minesweeper-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.minesweeper-header-menu {
+    width: 100%;
+    display: flex;
+    gap: 12px;
+    padding: 1px 4px;
+    border-bottom: 1px solid var(--win-dark);
+    color: var(--win-black);
+}
+
+.minesweeper-frame {
+    background-color: var(--win-gray);
+    border-top: 3px solid var(--win-light);
+    border-left: 3px solid var(--win-light);
+    border-right: 3px solid var(--win-dark);
+    border-bottom: 3px solid var(--win-dark);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.minesweeper-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--win-gray);
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    padding: 4px 6px;
+}
+
+.led-display {
+    background-color: #000000;
+    color: #ff0000;
+    font-family: var(--win-mono);
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding: 1px 4px;
+    border: 1px solid var(--win-dark);
+}
+
+.ms-face-btn {
+    width: 26px;
+    height: 26px;
+    font-size: 16px;
+    background-color: var(--win-gray);
+    border-top: 2px solid var(--win-light);
+    border-left: 2px solid var(--win-light);
+    border-right: 2px solid var(--win-black);
+    border-bottom: 2px solid var(--win-black);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ms-face-btn:active {
+    border-top: 2px solid var(--win-black);
+    border-left: 2px solid var(--win-black);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+}
+
+.minesweeper-board {
+    border-top: 3px solid var(--win-dark);
+    border-left: 3px solid var(--win-dark);
+    border-right: 3px solid var(--win-light);
+    border-bottom: 3px solid var(--win-light);
+    display: flex;
+    flex-direction: column;
+}
+
+.ms-row {
+    display: flex;
+}
+
+.ms-cell {
+    width: 20px;
+    height: 20px;
+    background-color: var(--win-gray);
+    border-top: 2px solid var(--win-light);
+    border-left: 2px solid var(--win-light);
+    border-right: 2px solid var(--win-dark);
+    border-bottom: 2px solid var(--win-dark);
+    font-family: var(--win-mono);
+    font-weight: bold;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+}
+
+.ms-cell.revealed {
+    border: 1px solid #7b7b7b;
+    border-width: 1px 0 0 1px;
+    background-color: #c0c0c0;
+    box-shadow: inset 1px 1px 0px #7b7b7b;
+}
+
+.ms-cell.mine {
+    background-color: #c0c0c0;
+}
+
+.ms-cell.hit {
+    background-color: #ff0000;
+}
+
+.ms-cell.num-1 { color: #0000ff; }
+.ms-cell.num-2 { color: #008000; }
+.ms-cell.num-3 { color: #ff0000; }
+.ms-cell.num-4 { color: #000080; }
+.ms-cell.num-5 { color: #800000; }
+.ms-cell.num-6 { color: #008080; }
+.ms-cell.num-7 { color: #000000; }
+.ms-cell.num-8 { color: #808080; }
+
+/* ==========================================================================
+   Pinball Space Cadet Styles
+   ========================================================================== */
+
+.pinball-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0d0d2b;
+    color: #ffffff;
+    padding: 4px;
+    gap: 4px;
+}
+
+.pinball-top-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background-color: #1a1a4a;
+    padding: 4px 8px;
+    border: 1px solid #333388;
+}
+
+.pinball-score-box, .pinball-balls-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.pinball-lbl {
+    font-size: 8px;
+    color: #88aaff;
+    font-weight: bold;
+}
+
+.pinball-lcd {
+    font-family: var(--win-mono);
+    color: #ffff00;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.pinball-canvas-container {
+    border: 2px solid #5070c0;
+    background-color: #000000;
+}
+
+.pinball-controls-bar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.pb-btn {
+    flex: 1;
+    padding: 4px 0;
+    font-size: 10px;
+}
+
+.pinball-tip {
+    font-size: 9px;
+    color: #aaaaee;
+    text-align: center;
+}
+
+/* ==========================================================================
+   MS Paint Styles
+   ========================================================================== */
+
+.paint-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 4px;
+}
+
+.paint-menu-bar {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid var(--win-dark);
+    padding: 1px 4px;
+}
+
+.paint-main {
+    flex: 1;
+    display: flex;
+    gap: 6px;
+}
+
+.paint-tools-panel {
+    display: grid;
+    grid-template-columns: repeat(2, 24px);
+    grid-auto-rows: 24px;
+    gap: 2px;
+    background-color: var(--win-gray);
+    padding: 2px;
+    border: 1px solid var(--win-dark);
+}
+
+.paint-tools-panel .tool-btn {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    font-size: 12px;
+}
+
+.paint-canvas-wrapper {
+    flex: 1;
+    background-color: #808080;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    overflow: auto;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#paint-canvas {
+    background-color: #ffffff;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+    cursor: crosshair;
+}
+
+.paint-bottom-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 4px;
+    background-color: var(--win-gray);
+}
+
+.paint-palette {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.paint-current-preview {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #000000;
+}
+
+.paint-swatches-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 14px);
+    grid-template-rows: repeat(2, 14px);
+    gap: 1px;
+}
+
+.paint-color-swatch {
+    width: 14px;
+    height: 14px;
+    border: 1px solid #777777;
+    cursor: pointer;
+}
+
+.paint-color-swatch.selected {
+    outline: 2px solid #000000;
+}
+
+/* ==========================================================================
+   Défragmenteur de disque Styles
+   ========================================================================== */
+
+.defrag-app {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.defrag-top-info {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.defrag-progress-outer {
+    width: 100%;
+    height: 16px;
+    background-color: #ffffff;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+}
+
+.defrag-progress-inner {
+    height: 100%;
+    width: 0%;
+    background-color: #000080;
+}
+
+.defrag-cluster-grid {
+    background-color: #ffffff;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    display: grid;
+    grid-template-columns: repeat(28, 1fr);
+    grid-template-rows: repeat(14, 12px);
+    gap: 1px;
+    padding: 3px;
+    height: 190px;
+    cursor: pointer;
+}
+
+.cluster-block {
+    width: 100%;
+    height: 100%;
+}
+
+.cluster-block.alloc { background-color: #0000aa; }
+.cluster-block.free { background-color: #ffffff; border: 1px solid #e0e0e0; }
+.cluster-block.read { background-color: #ffff00; }
+.cluster-block.write { background-color: #00aa00; }
+.cluster-block.bad { background-color: #aa00aa; }
+
+.defrag-legend {
+    display: flex;
+    gap: 10px;
+    font-size: 10px;
+    padding: 2px 4px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.legend-box {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+}
+
+.col-alloc { background-color: #0000aa; }
+.col-free { background-color: #ffffff; border: 1px solid #808080; }
+.col-read { background-color: #ffff00; }
+.col-write { background-color: #00aa00; }
+.col-bad { background-color: #aa00aa; }
+
+.defrag-controls {
+    display: flex;
+    gap: 6px;
+}
+
+/* ==========================================================================
+   Galerie Photos Styles
+   ========================================================================== */
+
+.gallery-app {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.gallery-toolbar {
+    display: flex;
+    gap: 6px;
+}
+
+.gallery-view-area {
+    background-color: #222222;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+}
+
+#gal-canvas {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+.gallery-meta-bar {
+    background-color: var(--win-gray);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+    font-size: 10px;
+    padding: 4px;
+    border: 1px solid var(--win-dark);
+}
+
+/* ==========================================================================
+   Bloc-notes (Notepad) Styles
+   ========================================================================== */
+
+.notepad-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.notepad-menu-bar {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid var(--win-dark);
+    padding: 1px 4px;
+}
+
+.notepad-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px;
+    background-color: var(--win-gray);
+}
+
+.notepad-textarea {
+    flex: 1;
+    background-color: #ffffff;
+    font-family: var(--win-mono);
+    font-size: 12px;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+    padding: 6px;
+    outline: none;
+    resize: none;
+}
+
+.notepad-status-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 4px;
+    border-top: 1px solid var(--win-dark);
+    font-size: 10px;
+}
+
+/* ==========================================================================
+   Internet Explorer 5 Styles
+   ========================================================================== */
+
+.browser-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.browser-toolbar {
+    display: flex;
+    gap: 4px;
+    padding: 3px;
+    background-color: var(--win-gray);
+    border-bottom: 1px solid var(--win-dark);
+}
+
+.b-btn {
+    padding: 2px 6px;
+    font-weight: bold;
+}
+
+.b-btn-dial {
+    margin-left: auto;
+    background: #eef7ee;
+    font-weight: bold;
+}
+
+.browser-address-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 4px;
+    background-color: var(--win-gray);
+    border-bottom: 1px solid var(--win-dark);
+}
+
+.addr-input {
+    flex: 1;
+}
+
+.browser-viewport {
+    flex: 1;
+    background-color: #ffffff;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.browser-status-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 6px;
+    background-color: var(--win-gray);
+    border-top: 1px solid var(--win-dark);
+    font-size: 10px;
+}
+
+/* Vintage Web Layouts */
+.web-altavista {
+    text-align: center;
+    padding: 20px 10px;
+}
+
+.av-logo {
+    font-size: 26px;
+    font-weight: bold;
+    color: #cc0000;
+    font-family: Georgia, serif;
+}
+
+.av-logo span {
+    font-size: 12px;
+    vertical-align: super;
+}
+
+.av-tagline {
+    font-size: 10px;
+    color: #666666;
+    margin-bottom: 15px;
+}
+
+.av-search-box {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 20px;
+}
+
+.av-links {
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.vintage-banner {
+    margin-top: 30px;
+    padding: 8px;
+    background: linear-gradient(90deg, #ff0000, #ffff00, #00ff00, #00ffff, #ff00ff);
+    color: #000000;
+    font-weight: bold;
+    font-size: 10px;
+    border: 2px dashed #000000;
+    cursor: pointer;
+}
+
+.web-ram {
+    text-align: center;
+    padding: 15px;
+}
+
+.blink-text {
+    color: #ff0000;
+    animation: blinkAnim 0.7s infinite;
+}
+
+@keyframes blinkAnim {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+.ram-box {
+    background-color: #f0f0ff;
+    border: 2px solid #0000aa;
+    padding: 15px;
+    margin: 15px 0;
+    display: inline-block;
+}
+
+.ram-download-btn {
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #000080;
+    margin-top: 10px;
+}
+
+.web-geocities {
+    background-color: #000033;
+    color: #ffff00;
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    padding: 10px;
+}
+
+.geo-marquee {
+    background-color: #ffff00;
+    color: #000000;
+    font-weight: bold;
+    padding: 3px;
+    margin-bottom: 12px;
+}
+
+.geo-construction {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #ff6600;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.web-kazaa {
+    padding: 10px;
+}
+
+.kazaa-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.kazaa-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px;
+    border: 1px solid #dcdcdc;
+    background-color: #f9f9f9;
+}
+
+/* ==========================================================================
+   Poste de travail & Corbeille Styles
+   ========================================================================== */
+
+.computer-app {
+    display: flex;
+    gap: 20px;
+    padding: 16px;
+}
+
+.drive-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90px;
+    text-align: center;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.drive-item:hover {
+    background-color: #e8e8e8;
+}
+
+.drive-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 4px;
+}
+
+.computer-status {
+    border-top: 1px solid var(--win-dark);
+    padding: 3px 6px;
+    font-size: 10px;
+}
+
+.recycle-app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.recycle-toolbar {
+    display: flex;
+    gap: 6px;
+    padding: 4px;
+    border-bottom: 1px solid var(--win-dark);
+}
+
+.recycle-list {
+    flex: 1;
+    background-color: #ffffff;
+    border-top: 2px solid var(--win-dark);
+    border-left: 2px solid var(--win-dark);
+    padding: 4px;
+    overflow-y: auto;
+}
+
+.recycle-item {
+    display: flex;
+    align-items: center;
+    padding: 3px 6px;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 11px;
+}
+
+.rec-icon { margin-right: 8px; }
+.rec-name { flex: 1; font-weight: bold; }
+.rec-size { width: 70px; color: #666666; }
+.rec-date { width: 90px; color: #666666; }
+
+.recycle-status {
+    padding: 3px 6px;
+    font-size: 10px;
+    border-top: 1px solid var(--win-dark);
+}
+
+/* ==========================================================================
+   Retro Error Dialog Styles
+   ========================================================================== */
+
+.retro-error-dialog-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    padding: 4px;
+}
+
+.error-dialog-upper {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 4px;
+}
+
+.error-dialog-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+.error-dialog-text p {
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.error-dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    padding-top: 8px;
+    border-top: 1px solid #dfdfdf;
+}
+
+/* ==========================================================================
+   Clippy Assistant Styles
+   ========================================================================== */
+
+.clippy-wrapper {
+    position: fixed;
+    bottom: 40px;
+    right: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 99990;
+    transition: transform 0.3s ease;
+}
+
+.clippy-wrapper.hidden {
+    display: none;
+}
+
+.clippy-speech-bubble {
+    width: 210px;
+    background-color: #ffffcc;
+    border: 1px solid #000000;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.35);
+    border-radius: 6px;
+    padding: 8px;
+    margin-bottom: 8px;
+    position: relative;
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+.clippy-speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: 30px;
+    border-width: 8px 8px 0;
+    border-style: solid;
+    border-color: #ffffcc transparent;
+    display: block;
+    width: 0;
+}
+
+.clippy-bubble-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-top: 6px;
+}
+
+.clippy-btn {
+    padding: 2px 6px;
+    font-size: 10px;
+}
+
+.clippy-character {
+    cursor: pointer;
+    animation: clippyFloat 3s infinite ease-in-out;
+}
+
+@keyframes clippyFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.clippy-corrupted .clippy-character {
+    filter: invert(1) hue-rotate(180deg);
+    animation: screenShakeAnim 0.2s infinite;
+}
+
+/* ==========================================================================
+   Notifications Container
+   ========================================================================== */
+
+#retro-notifications {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 999990;
+    pointer-events: none;
+}
+
+.notif-box {
+    pointer-events: auto;
+    width: 280px;
+    background-color: var(--win-gray);
+    border-top: 2px solid var(--win-light);
+    border-left: 2px solid var(--win-light);
+    border-right: 2px solid var(--win-black);
+    border-bottom: 2px solid var(--win-black);
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.dialog-title-bar {
+    height: 18px;
+    background: linear-gradient(90deg, #000080, #1084d0);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1px 4px;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.dialog-body {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+}
+
+.dialog-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.dialog-message {
+    font-size: 10px;
+}
+
+/* ==========================================================================
+   Blue Screen of Death (BSOD) Overlay
+   ========================================================================== */
+
+.bsod-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0000aa;
+    color: #ffffff;
+    font-family: var(--win-mono);
+    font-size: 15px;
+    line-height: 1.5;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: default;
+    outline: none;
+}
+
+.bsod-overlay.hidden {
+    display: none;
+}
+
+.bsod-inner {
+    max-width: 800px;
+    text-align: left;
+}
+
+.bsod-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.bsod-title-box {
+    background-color: #a8a8a8;
+    color: #0000aa;
+    padding: 2px 14px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.bsod-bonus-text {
+    color: #ffff00;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.bsod-cursor-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.bsod-btn {
+    background-color: #a8a8a8;
+    color: #0000aa;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 8px 16px;
+}
+
+.bsod-blink {
+    font-size: 20px;
+    font-weight: bold;
+    animation: blinkAnim 0.6s infinite;
+}
+
+/* ==========================================================================
+   Shutdown Safe Screen (Classic Orange Screen)
+   ========================================================================== */
+
+.shutdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    color: #ff8800;
+    font-family: var(--win-mono);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 999999;
+    cursor: pointer;
+}
+
+.shutdown-overlay.hidden {
+    display: none;
+}
+
+.shutdown-text {
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px #ff6600;
+    margin-bottom: 20px;
+}
+
+.shutdown-sub {
+    font-size: 12px;
+    color: #884400;
+}
+
+/* ==========================================================================
+   Retro Parody Popup Ads & Storm Styles
+   ========================================================================== */
+
+.popup-ad-window {
+    position: absolute;
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.6);
+    border: 3px outset #ffffff;
+    z-index: 1000;
+    animation: popupEntrance 0.15s ease-out;
+}
+
+@keyframes popupEntrance {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.popup-title-bar {
+    cursor: move;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.popup-flame {
+    margin-right: 4px;
+    animation: blinkAnim 0.5s infinite;
+}
+
+.popup-ad-body {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background-color: #ffffff;
+    font-family: var(--win-font);
+}
+
+.popup-badge {
+    align-self: flex-start;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 1px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+.popup-marquee {
+    background-color: #000000;
+    color: #ffff00;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px;
+    border: 1px dashed #ffff00;
+}
+
+.popup-message {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #000000;
+    font-weight: 500;
+    padding: 4px 0;
+}
+
+.popup-action-row {
+    display: flex;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.popup-claim-btn {
+    width: 100%;
+    padding: 8px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    border: 2px outset #ffffff;
+    background: linear-gradient(180deg, #ffffaa, #ffcc00);
+    color: #990000;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.popup-claim-btn:active {
+    border: 2px inset #ffffff;
+    background: linear-gradient(180deg, #ffcc00, #ffffaa);
+}
+
+.popup-reward-badge {
+    display: inline-block;
+    margin-top: 2px;
+    font-size: 10px;
+    color: #006600;
+    font-weight: bold;
+}
+
+.popup-sub-links {
+    text-align: center;
+    margin-top: 2px;
+}
+
+.popup-link-no {
+    font-size: 9px;
+    color: #888888;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.popup-link-no:hover {
+    color: #000000;
+}
+
+/* THEMES */
+/* Hot / Dating */
+.theme-hot .popup-title-bar {
+    background: linear-gradient(90deg, #cc0000, #ff6600) !important;
+    color: #ffffff !important;
+}
+.theme-hot .popup-badge {
+    background-color: #ff0000;
+    color: #ffffff;
+}
+.theme-hot .popup-ad-body {
+    background: linear-gradient(180deg, #fff5f5, #ffe6e6);
+}
+
+/* Growth */
+.theme-growth .popup-title-bar {
+    background: linear-gradient(90deg, #008800, #66cc00) !important;
+    color: #ffffff !important;
+}
+.theme-growth .popup-badge {
+    background-color: #00aa00;
+    color: #ffffff;
+}
+.theme-growth .popup-ad-body {
+    background: linear-gradient(180deg, #f0fff0, #e6ffe6);
+}
+
+/* Pink / Romantic */
+.theme-pink .popup-title-bar {
+    background: linear-gradient(90deg, #cc0066, #ff66aa) !important;
+    color: #ffffff !important;
+}
+.theme-pink .popup-badge {
+    background-color: #ff3399;
+    color: #ffffff;
+}
+.theme-pink .popup-ad-body {
+    background: linear-gradient(180deg, #fff0f7, #ffe0f0);
+}
+
+/* Gold / Casino */
+.theme-gold .popup-title-bar {
+    background: linear-gradient(90deg, #b8860b, #ffd700) !important;
+    color: #000000 !important;
+}
+.theme-gold .popup-badge {
+    background-color: #d4af37;
+    color: #000000;
+}
+.theme-gold .popup-ad-body {
+    background: linear-gradient(180deg, #fffdf0, #fff8dc);
+}
+
+/* Cyan / Tech */
+.theme-cyan .popup-title-bar {
+    background: linear-gradient(90deg, #0055aa, #00aaff) !important;
+    color: #ffffff !important;
+}
+.theme-cyan .popup-badge {
+    background-color: #0099ff;
+    color: #ffffff;
+}
+
+/* Banana */
+.theme-banana .popup-title-bar {
+    background: linear-gradient(90deg, #cc9900, #ffea00) !important;
+    color: #000000 !important;
+}
+.theme-banana .popup-badge {
+    background-color: #ffee55;
+    color: #000000;
+}
+
+/* Purple Bonzi */
+.theme-purple .popup-title-bar {
+    background: linear-gradient(90deg, #5500aa, #aa00ff) !important;
+    color: #ffffff !important;
+}
+.theme-purple .popup-badge {
+    background-color: #9933ff;
+    color: #ffffff;
+}
+
+/* Minitel */
+.theme-minitel .popup-title-bar {
+    background: #000000 !important;
+    color: #ffaa00 !important;
+    font-family: var(--win-mono);
+}
+.theme-minitel .popup-badge {
+    background-color: #ffaa00;
+    color: #000000;
+    font-family: var(--win-mono);
+}
+.theme-minitel .popup-ad-body {
+    background: #111111;
+    color: #ffaa00;
+}
+.theme-minitel .popup-message {
+    color: #ffaa00;
+    font-family: var(--win-mono);
+}
+
+/* Alert */
+.theme-alert .popup-title-bar {
+    background: repeating-linear-gradient(45deg, #cc0000, #cc0000 10px, #ffcc00 10px, #ffcc00 20px) !important;
+    color: #000000 !important;
+    font-weight: bold;
+}
+.theme-alert .popup-badge {
+    background-color: #cc0000;
+    color: #ffffff;
+}
+
