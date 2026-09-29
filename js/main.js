@@ -29,10 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('click', onFirstInteraction);
     window.addEventListener('keydown', onFirstInteraction);
 
-    // 7. Auto-open Main Chaos Clicker window on start
-    setTimeout(() => {
-        window.chaosApp.open();
-    }, 400);
+    // 7. Initialize Windows XP Login Screen
+    if (window.xpLoginScreen) {
+        window.xpLoginScreen.init(() => {
+            // Callback executed after user logs in through Windows XP Welcome Screen
+            setTimeout(() => {
+                if (window.chaosApp) window.chaosApp.open();
+            }, 300);
+        });
+    } else {
+        setTimeout(() => {
+            if (window.chaosApp) window.chaosApp.open();
+        }, 400);
+    }
 
     // 8. Main Game Loop (60 FPS)
     let lastTime = performance.now();
@@ -344,6 +353,7 @@ function setupStartMenu() {
     bindMenu('#sm-item-notepad', () => window.notepadApp.open());
     bindMenu('#sm-item-ie', () => window.browserApp.open());
     bindMenu('#sm-item-clippy', () => window.clippyCompanion.showRandomQuote());
+    bindMenu('#sm-item-test-popup', () => window.popupManager.spawnPopup());
     bindMenu('#sm-item-popups', () => window.popupManager.closeAllPopups());
     bindMenu('#sm-item-restart', () => {
         if (confirm("Voulez-vous redémarrer le système d'exploitation Windows 95 ?")) {
@@ -355,6 +365,7 @@ function setupStartMenu() {
 
 // Famous Shutdown Screen
 function triggerShutDownScreen() {
+    window.triggerShutDownScreen = triggerShutDownScreen;
     const shutScreen = document.getElementById('shutdown-screen');
     if (!shutScreen) return;
 

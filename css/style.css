@@ -1870,10 +1870,11 @@ body.glitch-stage-apocalypse {
 
 .popup-ad-window {
     position: absolute;
-    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.6);
+    box-shadow: 5px 5px 22px rgba(0, 0, 0, 0.75);
     border: 3px outset #ffffff;
     z-index: 1000;
     animation: popupEntrance 0.15s ease-out;
+    width: 350px !important;
 }
 
 @keyframes popupEntrance {
@@ -1885,6 +1886,7 @@ body.glitch-stage-apocalypse {
     cursor: move;
     font-size: 11px;
     font-weight: bold;
+    user-select: none;
 }
 
 .popup-flame {
@@ -1893,12 +1895,18 @@ body.glitch-stage-apocalypse {
 }
 
 .popup-ad-body {
-    padding: 8px;
+    padding: 6px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     background-color: #ffffff;
     font-family: var(--win-font);
+}
+
+.popup-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .popup-badge {
@@ -1910,6 +1918,25 @@ body.glitch-stage-apocalypse {
     text-transform: uppercase;
 }
 
+.popup-banner-image {
+    width: 100%;
+    height: 80px;
+    border: 2px inset var(--win-light);
+    background-color: #000000;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.7);
+    margin: 2px 0 2px 0;
+}
+
+.popup-banner-image svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
 .popup-marquee {
     background-color: #000000;
     color: #ffff00;
@@ -1917,14 +1944,57 @@ body.glitch-stage-apocalypse {
     font-weight: bold;
     padding: 2px;
     border: 1px dashed #ffff00;
+    overflow: hidden;
+}
+
+.popup-main-content {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #d4d0c8;
+    padding: 4px 6px;
+    margin: 2px 0;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.popup-photo-frame {
+    flex-shrink: 0;
+    width: 74px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+    border: 2px inset #ffffff;
+    padding: 2px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.popup-photo-frame svg {
+    width: 70px;
+    height: 70px;
+    display: block;
+    background-color: #111111;
+}
+
+.popup-photo-tag {
+    font-size: 7.5px;
+    font-weight: bold;
+    color: #cc0000;
+    text-align: center;
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
 }
 
 .popup-message {
-    font-size: 11px;
-    line-height: 1.4;
+    flex: 1;
+    font-size: 10.5px;
+    line-height: 1.45;
     color: #000000;
     font-weight: 500;
-    padding: 4px 0;
+    padding: 0;
+    margin: 0;
 }
 
 .popup-action-row {
@@ -2087,5 +2157,508 @@ body.glitch-stage-apocalypse {
 .theme-alert .popup-badge {
     background-color: #cc0000;
     color: #ffffff;
+}
+
+/* XXX / Adult 1999 Theme */
+.theme-xxx .popup-title-bar {
+    background: linear-gradient(90deg, #990000, #ff0055) !important;
+    color: #ffffff !important;
+    animation: blinkAnim 0.8s infinite;
+}
+.theme-xxx .popup-badge {
+    background-color: #000000;
+    color: #ff0055;
+    border: 1px solid #ff0055;
+}
+.theme-xxx .popup-ad-body {
+    background: linear-gradient(180deg, #fff0f5, #ffe4e1);
+}
+.theme-xxx .popup-claim-btn {
+    background: linear-gradient(180deg, #ff3366, #cc0033);
+    color: #ffffff;
+    border-color: #ff99bb;
+    font-size: 12px;
+}
+
+/* Strip Poker Theme */
+.theme-strip .popup-title-bar {
+    background: linear-gradient(90deg, #660066, #ff00aa) !important;
+    color: #ffffff !important;
+}
+.theme-strip .popup-badge {
+    background-color: #ff00aa;
+    color: #ffffff;
+}
+.theme-strip .popup-ad-body {
+    background: linear-gradient(180deg, #faf0f8, #f5d6ee);
+}
+.theme-strip .popup-claim-btn {
+    background: linear-gradient(180deg, #ff00aa, #880066);
+    color: #ffffff;
+}
+
+/* Elements */
+.popup-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-age-badge {
+    background-color: #cc0000;
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: bold;
+    padding: 1px 4px;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+    animation: blinkAnim 0.7s infinite;
+}
+
+.popup-preview-box {
+    background-color: #000000;
+    color: #ff0077;
+    font-family: var(--win-mono);
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    padding: 6px 4px;
+    border: 1px dashed #ff0077;
+    text-shadow: 0 0 5px #ff0077;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   Windows XP Login / Welcome Screen (Écran de Bienvenue Windows XP)
+   ========================================================================== */
+
+.xp-login-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: radial-gradient(circle at 50% 50%, #5a7edc 0%, #385cb6 50%, #204193 100%);
+    font-family: 'Segoe UI', Tahoma, Verdana, Arial, sans-serif;
+    color: #ffffff;
+    user-select: none;
+    transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1), transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.xp-login-screen.fade-out {
+    opacity: 0;
+    transform: scale(1.03);
+    pointer-events: none;
+}
+
+/* Top Dark Navy Bar */
+.xp-top-bar {
+    height: 64px;
+    background: linear-gradient(to bottom, #001f5c, #002e88);
+    position: relative;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+
+.xp-top-highlight {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 5%, rgba(255, 255, 255, 0.8) 50%, transparent 95%);
+}
+
+/* Bottom Dark Navy Bar */
+.xp-bottom-bar {
+    height: 80px;
+    background: linear-gradient(to top, #001642, #002878);
+    position: relative;
+    border-top: 2px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+}
+
+.xp-bottom-highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 5%, rgba(255, 255, 255, 0.8) 50%, transparent 95%);
+}
+
+.xp-bottom-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.xp-power-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+}
+
+.xp-power-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.xp-power-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff4d4d, #cc0000);
+    border: 2px solid #ffffff;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.xp-power-text {
+    font-size: 13px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.xp-bottom-note {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    max-width: 450px;
+    text-align: right;
+}
+
+/* Center Section */
+.xp-main-body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+    gap: 0;
+}
+
+/* Left Brand Section */
+.xp-brand-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-right: 48px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.xp-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.xp-flag-icon {
+    filter: drop-shadow(2px 3px 5px rgba(0, 0, 0, 0.4));
+}
+
+.xp-brand-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.xp-ms-text {
+    font-size: 13px;
+    font-style: italic;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    opacity: 0.95;
+    margin-bottom: -4px;
+}
+
+.xp-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+.xp-win-title {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+
+.xp-edition-title {
+    font-family: Arial, sans-serif;
+    font-size: 34px;
+    font-weight: 900;
+    font-style: italic;
+    color: #ff6600;
+    text-shadow: 0 0 10px rgba(255, 102, 0, 0.4);
+}
+
+.xp-welcome-instruction {
+    max-width: 320px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: right;
+}
+
+/* Glowing Center Divider Line */
+.xp-center-divider {
+    width: 2px;
+    height: 380px;
+    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.85) 30%, rgba(255, 255, 255, 0.85) 70%, transparent);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    flex-shrink: 0;
+}
+
+/* Right User Section */
+.xp-user-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 48px;
+    gap: 16px;
+}
+
+.xp-user-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    background: rgba(0, 24, 80, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+    min-width: 340px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.xp-user-card:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+}
+
+.xp-avatar-box {
+    width: 66px;
+    height: 66px;
+    border-radius: 6px;
+    border: 3px solid #ffffff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4), inset 0 0 0 1px #ffaa00;
+    overflow: hidden;
+    background: #ff7700;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.xp-avatar-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.xp-user-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.xp-user-name-display {
+    font-size: 17px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0.3px;
+}
+
+.xp-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.xp-field-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.xp-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    width: 82px;
+}
+
+.xp-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.xp-input {
+    background-color: #ffffff;
+    color: #000000;
+    border: 2px solid #7f9db9;
+    border-radius: 3px;
+    font-family: Tahoma, 'Segoe UI', sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 3px 8px;
+    width: 135px;
+    outline: none;
+    box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.2);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.xp-input.active-field {
+    border-color: #ff9900;
+    box-shadow: 0 0 6px rgba(255, 153, 0, 0.9), inset 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.xp-go-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s ease;
+    filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.5));
+}
+
+.xp-go-btn:hover {
+    transform: scale(1.12);
+}
+
+.xp-go-btn:active {
+    transform: scale(0.95);
+}
+
+/* Status loading (Bienvenue...) */
+.xp-status-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 0;
+}
+
+.xp-status-welcome {
+    font-family: 'Georgia', serif;
+    font-size: 19px;
+    font-style: italic;
+    color: #ffffff;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.9);
+    animation: xpPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes xpPulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+}
+
+/* Keyboard Tip Box */
+.xp-keyboard-tip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 340px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px dashed rgba(255, 255, 255, 0.35);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #ffffaa;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.xp-tip-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.xp-quick-login-btn {
+    background: linear-gradient(to bottom, #f0f0f0, #d4d0c8);
+    border: 2px outset #ffffff;
+    color: #000000;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.4);
+    transition: background 0.1s ease;
+}
+
+.xp-quick-login-btn:hover {
+    background: linear-gradient(to bottom, #ffffff, #e0dcd4);
+}
+
+.xp-quick-login-btn:active {
+    border-style: inset;
+    background: linear-gradient(to bottom, #d4d0c8, #f0f0f0);
+}
+
+@media (max-width: 768px) {
+    .xp-main-body {
+        flex-direction: column;
+        padding: 10px;
+        gap: 15px;
+    }
+    .xp-brand-section {
+        align-items: center;
+        padding-right: 0;
+        text-align: center;
+    }
+    .xp-welcome-instruction {
+        text-align: center;
+    }
+    .xp-center-divider {
+        width: 80%;
+        height: 2px;
+        background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.85) 30%, rgba(255, 255, 255, 0.85) 70%, transparent);
+    }
+    .xp-user-section {
+        align-items: center;
+        padding-left: 0;
+    }
+    .xp-bottom-content {
+        padding: 0 15px;
+    }
+    .xp-bottom-note {
+        display: none;
+    }
 }
 

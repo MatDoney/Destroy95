@@ -111,6 +111,86 @@ class RetroAudioEngine {
         });
     }
 
+    // Windows XP Logon Sound (Famous Bill Brown / Tom Ockerse startup chime)
+    playXpLogon() {
+        this.ensureContext();
+        if (!this.ctx || this.isMuted) return;
+
+        const now = this.ctx.currentTime;
+        // Warm rich pad chord (Eb major)
+        const chord = [
+            { freq: 155.56, gain: 0.16, type: 'sawtooth' }, // Eb3
+            { freq: 196.00, gain: 0.12, type: 'sine' },     // G3
+            { freq: 233.08, gain: 0.15, type: 'sine' },     // Bb3
+            { freq: 311.13, gain: 0.12, type: 'triangle' }  // Eb4
+        ];
+
+        chord.forEach(c => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            const flt = this.ctx.createBiquadFilter();
+            flt.type = 'lowpass';
+            flt.frequency.setValueAtTime(300, now);
+            flt.frequency.exponentialRampToValueAtTime(1400, now + 0.8);
+            flt.frequency.exponentialRampToValueAtTime(400, now + 3.2);
+
+            osc.type = c.type;
+            osc.frequency.setValueAtTime(c.freq, now);
+
+            gain.gain.setValueAtTime(0.001, now);
+            gain.gain.linearRampToValueAtTime(c.gain, now + 0.3);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 3.2);
+
+            osc.connect(flt);
+            flt.connect(gain);
+            gain.connect(this.masterGain);
+
+            osc.start(now);
+            osc.stop(now + 3.3);
+        });
+
+        // Crystal chime notes of XP logon arpeggio: Eb4, Bb4, Ab4, Eb4, Bb4, Eb5
+        const bellNotes = [
+            { freq: 311.13, time: 0.00, dur: 1.8, gain: 0.22 }, // Eb4
+            { freq: 466.16, time: 0.18, dur: 1.8, gain: 0.22 }, // Bb4
+            { freq: 415.30, time: 0.38, dur: 1.8, gain: 0.20 }, // Ab4
+            { freq: 311.13, time: 0.58, dur: 1.8, gain: 0.22 }, // Eb4
+            { freq: 466.16, time: 0.78, dur: 2.2, gain: 0.24 }, // Bb4
+            { freq: 622.25, time: 0.98, dur: 2.8, gain: 0.28 }  // Eb5
+        ];
+
+        bellNotes.forEach(b => {
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(b.freq, now + b.time);
+
+            // Shimmer harmonic overtone
+            const harm = this.ctx.createOscillator();
+            const harmGain = this.ctx.createGain();
+            harm.type = 'sine';
+            harm.frequency.setValueAtTime(b.freq * 2, now + b.time);
+
+            gain.gain.setValueAtTime(0.001, now + b.time);
+            gain.gain.linearRampToValueAtTime(b.gain, now + b.time + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + b.time + b.dur);
+
+            harmGain.gain.setValueAtTime(0.001, now + b.time);
+            harmGain.gain.linearRampToValueAtTime(b.gain * 0.4, now + b.time + 0.03);
+            harmGain.gain.exponentialRampToValueAtTime(0.001, now + b.time + b.dur * 0.7);
+
+            osc.connect(gain);
+            harm.connect(harmGain);
+            gain.connect(this.masterGain);
+            harmGain.connect(this.masterGain);
+
+            osc.start(now + b.time);
+            harm.start(now + b.time);
+            osc.stop(now + b.time + b.dur);
+            harm.stop(now + b.time + b.dur);
+        });
+    }
+
     // Windows Error Sound ("Chord")
     playError() {
         this.ensureContext();
@@ -622,6 +702,31 @@ class RetroAudioEngine {
         } else {
             this.playQuack();
         }
+    }
+
+    // Retro 90s cheeky synth sigh ("Ouuuh~")
+    playSexySynth() {
+        this.ensureContext();
+        if (!this.ctx || this.isMuted) return;
+
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(420, now);
+        osc.frequency.exponentialRampToValueAtTime(580, now + 0.12);
+        osc.frequency.exponentialRampToValueAtTime(260, now + 0.45);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.linearRampToValueAtTime(0.18, now + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.48);
+
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+
+        osc.start(now);
+        osc.stop(now + 0.5);
     }
 }
 

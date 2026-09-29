@@ -75,23 +75,31 @@ Aucun serveur, aucun Node.js ni commande `npm install` n'est nécessaire.
 
 ---
 
-### 🔥 2. La Tempête de Pop-ups Rétro (Parodies SFW)
-Au fur et à mesure que la corruption augmente ou lors de clics rapides, des **fenêtres publicitaires rétro** surgissent à l'écran, inspirées des bannières criardes et clickbaits du web de 1998-2003 :
-* 🔥 *Cartes mères chaudes dans ta commune !* (Socket 7 célibataire sans cavalier)
-* 🍆 *Augmentez la taille de votre disque dur de 540 Mo à 20 Go sans chirurgie !*
-* 👩‍💻 *Nicole du 56k attend votre message privé sur Caramail et ICQ !*
-* 🎰 *Vous êtes le 1 000 000ème visiteur ! Réclamez votre scanner à plat SCSI !*
-* 💊 *Viagra pour processeur : faites tourner votre Pentium à 1500 MHz !*
-* ⚠️ *Votre voisine a vu votre historique Netscape Navigator !*
-* 🍌 *Bananorama 2000 : tapez sur la banane pour tester votre dextérité !*
-* 🦧 *BonziBuddy en slip de bain léopard dansant la Macarena !*
-* 🚗 *Gagnez une Renault Twingo 1996 en envoyant WINDOWS au 3615 !*
-* 📟 *3615 ULLA : dialogue en direct en 1200 bauds !*
+### 🔥 2. La Tempête de Pop-ups Rétro & Bannières Illustrées (Parodies du Web 1998-2003)
+Au fur et à mesure que la corruption augmente ou lors de clics rapides, des **fenêtres publicitaires rétro illustrées** surgissent à l'écran, inspirées des vrais spams, bannières GIF et pop-ups clickbaits de l'époque (rencontres coquines, voyance, loteries, régimes miracles, casino Las Vegas, etc., sans aucun jargon informatique) :
+* 🔥 *Femmes chaudes célibataires dans ta ville !* (Portrait webcam 90s avec bandeau de censure pixelisé « TROP CHAUDE »).
+* 🍆 *Augmentez votre virilité de +8 cm en 14 jours !* (Aubergine culturiste avec lunettes de soleil, stéthoscope et mètre ruban).
+* 🎰 *Félicitations ! Vous avez gagné 50 000 € !* (Sac d'or débordant de billets et chèque géant certifié par huissier).
+* 🔮 *Madame Irma : Votre avenir amoureux dévoilé !* (Voyante au turban violet, yeux hypnotiques et boule de cristal électrifiée).
+* 💊 *Perdez 14 kg en dormant sans aucun effort !* (Ananas souriant avec lunettes de soleil et ceinture mètre-ruban).
+* ✈️ *Gagnez un voyage de rêve aux Caraïbes pour 2 !* (Île paradisiaque, perroquet à lunettes de soleil et cocktail sous les cocotiers).
+* 👙 *VIP Club : Striptease privé en direct !* (Silhouette néon avec oreilles de lapin, boa en plumes et coupe de champagne - 100% SFW).
+* 🥵 *Femmes mariées en quête d'aventures discrètes* (Masque vénitien orné, yeux émeraude mystérieux et doigt sur la bouche « Chut »).
+* 💰 *Héritage millionnaire d'un prince étranger* (Prince en couronne d'or, cape royale en velours et dent d'or scintillante).
+* 🚨 *Test de fidélité : Ton partenaire te trompe-t-il ?* (Détective en trench-coat et loupe braquée sur une trace de rouge à lèvres).
+* 🎲 *Casino Royal : 500 tours de roulette offerts !* (Machine à sous rétro avec triple 7 clignotants et dés rouges).
+* 🚗 *Gagnez une berline de luxe tout confort !* (Bolide rouge étincelant avec phares allumés et clé de contact dorée).
+* 💋 *Chat direct : Céline est seule dans sa chambre* (Webcam vintage 160x120 avec casque micro rose et timestamp 23:42).
+* 🏡 *Villas de luxe aux enchères à partir de 1 € !* (Villa moderne avec piscine turquoise, bouée flamant rose et étiquette 1 €).
+* 📹 *Webcam coquine : La voisine du 3e en direct !* (Mireille avec ses bigoudis roses géants et ses lunettes papillon arrosant ses géraniums).
+* 💘 *Test d'amour scientifique 100% infaillible !* (Cupidon potelé à lunettes de soleil et thermomètre de passion à 100%).
 
-**Interactions :**
-* Cliquer sur l'offre d'une pub rapporte un **gros bonus d'octets corrompus**.
-* Fermer une pub avec la croix a 22% de chance d'en engendrer une nouvelle (effet hydre des pubs des années 2000).
-* Un bouton **« PUB ✕ »** dans la barre des tâches (AdBlock 95) permet de fermer tous les pop-ups d'un seul clic.
+**Richesse Visuelle & Interactions :**
+* **Double Illustration Dédiée** : Chaque pop-up intègre à la fois une **bannière graphique animée rétro (320x80)** et un **cadre photo / miniature parodique (70x70)** au format SVG vectoriel haute fidélité (100% autonome, zéro téléchargement réseau, zéro 404).
+* Cliquer sur le bouton d'une pub rapporte un **gros bonus d'octets corrompus**.
+* Fermer une pub avec la croix a 25% de chance d'en engendrer une nouvelle (l'authentique effet hydre des pop-ups des années 2000).
+* Un bouton **« PUB ✕ »** dans la barre des tâches (AdBlock 95) ou dans le menu Démarrer permet de tout fermer d'un coup.
+* Un raccourci **« Ouvrir un Pop-up Publicitaire »** dans le menu Démarrer permet d'invoquer instantanément une publicité pour tester.
 
 ---
 

@@ -67,9 +67,17 @@
                 <span class="sm-icon">📎</span>
                 <span class="sm-text">Appeler Clippy</span>
             </div>
+            <div class="start-item" id="sm-item-test-popup">
+                <span class="sm-icon">💬</span>
+                <span class="sm-text">Ouvrir un Pop-up Publicitaire</span>
+            </div>
             <div class="start-item" id="sm-item-popups">
                 <span class="sm-icon">🛑</span>
                 <span class="sm-text">Fermer tous les Pop-ups (AdBlock 95)</span>
+            </div>
+            <div class="start-item" id="sm-item-lock">
+                <span class="sm-icon">🔒</span>
+                <span class="sm-text">Fermer la session (Écran XP)</span>
             </div>
             <div class="start-item" id="sm-item-restart">
                 <span class="sm-icon">🔄</span>
@@ -137,6 +145,144 @@
         <div class="shutdown-sub">(Cliquez n'importe où sur l'écran pour redémarrer Windows)</div>
     </div>
 
+    <!-- Windows XP Login Screen (Écran de Bienvenue Windows XP) -->
+    <div id="xp-login-screen" class="xp-login-screen">
+        <!-- Top Dark Blue Bar -->
+        <header class="xp-top-bar">
+            <div class="xp-top-highlight"></div>
+        </header>
+
+        <!-- Main Center Section with Divider -->
+        <div class="xp-main-body">
+            <!-- Left Side: Windows XP Brand -->
+            <div class="xp-brand-section">
+                <div class="xp-logo-container">
+                    <div class="xp-flag-icon">
+                        <svg viewBox="0 0 48 48" width="54" height="54">
+                            <defs>
+                                <linearGradient id="xp_flag_r" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#ff3b00"/>
+                                    <stop offset="100%" stop-color="#b80000"/>
+                                </linearGradient>
+                                <linearGradient id="xp_flag_g" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#8ceb00"/>
+                                    <stop offset="100%" stop-color="#3d9900"/>
+                                </linearGradient>
+                                <linearGradient id="xp_flag_b" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#00b4ff"/>
+                                    <stop offset="100%" stop-color="#004db3"/>
+                                </linearGradient>
+                                <linearGradient id="xp_flag_y" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0%" stop-color="#ffea00"/>
+                                    <stop offset="100%" stop-color="#e68a00"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M4 8 Q14 4 22 9 L22 24 Q14 20 4 23 Z" fill="url(#xp_flag_r)"/>
+                            <path d="M26 9 Q34 14 44 9 L44 24 Q34 29 26 24 Z" fill="url(#xp_flag_g)"/>
+                            <path d="M4 27 Q14 24 22 28 L22 43 Q14 39 4 42 Z" fill="url(#xp_flag_b)"/>
+                            <path d="M26 28 Q34 33 44 28 L44 43 Q34 47 26 43 Z" fill="url(#xp_flag_y)"/>
+                        </svg>
+                    </div>
+                    <div class="xp-brand-text">
+                        <div class="xp-ms-text">Microsoft</div>
+                        <div class="xp-title-row">
+                            <span class="xp-win-title">Windows</span>
+                            <span class="xp-edition-title">xp</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="xp-welcome-instruction">
+                    Pour commencer, tapez votre nom d'utilisateur et votre mot de passe au clavier.
+                </div>
+            </div>
+
+            <!-- Glowing Vertical Center Divider Line -->
+            <div class="xp-center-divider"></div>
+
+            <!-- Right Side: User Card & Input -->
+            <div class="xp-user-section">
+                <div class="xp-user-card" id="xp-user-card">
+                    <!-- Avatar Frame -->
+                    <div class="xp-avatar-box">
+                        <div class="xp-avatar-img">
+                            <!-- Classic Windows XP Orange Daisy Flower SVG -->
+                            <svg viewBox="0 0 64 64" width="58" height="58">
+                                <circle cx="32" cy="32" r="28" fill="#ff7700"/>
+                                <circle cx="32" cy="14" r="7.5" fill="#ffffff" opacity="0.95"/>
+                                <circle cx="32" cy="50" r="7.5" fill="#ffffff" opacity="0.95"/>
+                                <circle cx="14" cy="32" r="7.5" fill="#ffffff" opacity="0.95"/>
+                                <circle cx="50" cy="32" r="7.5" fill="#ffffff" opacity="0.95"/>
+                                <circle cx="19" cy="19" r="7.5" fill="#ffffff" opacity="0.95"/>
+                                <circle cx="45" cy="19" r="7.5" fill="#ffffff" opacity="0.95"/>
+                                <circle cx="19" cy="45" r="7.5" fill="#ffffff" opacity="0.95"/>
+                                <circle cx="45" cy="45" r="7.5" fill="#ffffff" opacity="0.95"/>
+                                <circle cx="32" cy="32" r="10" fill="#ffd700" stroke="#cc8800" stroke-width="1.5"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- User Credentials & Fields -->
+                    <div class="xp-user-details" id="xp-user-details">
+                        <div class="xp-user-name-display" id="xp-user-name-display">Henry PC</div>
+
+                        <!-- Inputs Container -->
+                        <div class="xp-input-group" id="xp-input-group">
+                            <!-- Pseudo input -->
+                            <div class="xp-field-row" id="xp-pseudo-row">
+                                <label class="xp-label" for="xp-pseudo-input">Utilisateur :</label>
+                                <div class="xp-input-wrapper">
+                                    <input type="text" id="xp-pseudo-input" class="xp-input active-field" readonly autocomplete="off" placeholder="Tapez au clavier...">
+                                </div>
+                            </div>
+
+                            <!-- Password input + green submit arrow -->
+                            <div class="xp-field-row" id="xp-password-row">
+                                <label class="xp-label" for="xp-password-input">Mot de passe :</label>
+                                <div class="xp-input-wrapper">
+                                    <input type="password" id="xp-password-input" class="xp-input" readonly autocomplete="off" placeholder="••••••••••••">
+                                    <button class="xp-go-btn" id="xp-go-btn" title="Ouvrir la session (Entrée)">
+                                        <svg viewBox="0 0 24 24" width="16" height="16">
+                                            <circle cx="12" cy="12" r="11" fill="#46a049" stroke="#337733" stroke-width="1"/>
+                                            <polygon points="9,6 17,12 9,18" fill="#ffffff"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status during login (Bienvenue...) -->
+                        <div class="xp-status-row hidden" id="xp-status-row">
+                            <span class="xp-status-welcome">Bienvenue...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Keyboard Tip -->
+                <div class="xp-keyboard-tip">
+                    <span class="xp-tip-icon">⌨️</span>
+                    <span class="xp-tip-text">Tapez n'importe quelle touche pour remplir automatiquement <strong>Henry PC</strong> et le <strong>mot de passe</strong> !</span>
+                </div>
+                <button class="xp-quick-login-btn" id="xp-quick-login-btn">
+                    ⚡ Connexion Rapide (1-Clic)
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Dark Blue Bar -->
+        <footer class="xp-bottom-bar">
+            <div class="xp-bottom-highlight"></div>
+            <div class="xp-bottom-content">
+                <button class="xp-power-btn" id="xp-power-btn" title="Éteindre l'ordinateur">
+                    <span class="xp-power-circle">⏻</span>
+                    <span class="xp-power-text">Éteindre l'ordinateur</span>
+                </button>
+                <div class="xp-bottom-note">
+                    Après avoir ouvert votre session, vous pouvez détruire le système d'exploitation en toute liberté.
+                </div>
+            </div>
+        </footer>
+    </div>
+
     <!-- Scripts -->
     <script src="js/audio.js"></script>
     <script src="js/icons.js"></script>
@@ -153,6 +299,7 @@
     <script src="js/apps/clippy.js"></script>
     <script src="js/apps/popupStorm.js"></script>
     <script src="js/apps/chaosApp.js"></script>
+    <script src="js/loginScreen.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
