@@ -386,33 +386,81 @@ class ClickerEngine {
         }
     }
 
-    // Buy an upgrade
-    buyUpgrade(upgradeId) {
+    // Calculate total cost and affordable count for multiple upgrade purchases (1, 5, 10, 'max')
+    getUpgradeCostFor(upgradeId, amount = 1) {
+        const up = this.upgrades.find(u => u.id === upgradeId);
+        if (!up) return { totalCost: 0, count: 0, canAfford: false };
+
+        if (amount === 'max') {
+            let totalCost = 0;
+            let count = 0;
+            let currentCount = up.count;
+            let nextCost = Math.floor(up.baseCost * Math.pow(1.15, currentCount));
+
+            while (this.bytes >= totalCost + nextCost) {
+                totalCost += nextCost;
+                count++;
+                currentCount++;
+                nextCost = Math.floor(up.baseCost * Math.pow(1.15, currentCount));
+                if (count >= 10000) break;
+            }
+
+            if (count === 0) {
+                return {
+                    totalCost: Math.floor(up.baseCost * Math.pow(1.15, up.count)),
+                    count: 1,
+                    canAfford: false
+                };
+            }
+
+            return {
+                totalCost,
+                count,
+                canAfford: true
+            };
+        }
+
+        const num = Math.max(1, parseInt(amount, 10) || 1);
+        let totalCost = 0;
+        for (let i = 0; i < num; i++) {
+            totalCost += Math.floor(up.baseCost * Math.pow(1.15, up.count + i));
+        }
+
+        return {
+            totalCost,
+            count: num,
+            canAfford: this.bytes >= totalCost
+        };
+    }
+
+    // Buy an upgrade (supports amount: 1, 5, 10, 'max')
+    buyUpgrade(upgradeId, amount = 1) {
         const up = this.upgrades.find(u => u.id === upgradeId);
         if (!up) return false;
 
-        if (this.bytes >= up.cost) {
-            this.bytes -= up.cost;
-            up.count++;
-            // Classic 1.15x cost scaling
-            up.cost = Math.floor(up.baseCost * Math.pow(1.15, up.count));
-            this.recalcTotals();
-
-            window.retroAudio.ensureContext();
-            window.retroAudio.playDing();
-
-            if (up.id === 'bonzi') this.unlockAchievement('bonzi_unlocked');
-
-            this.updateDamage();
-
-            if (window.virusEffects) {
-                window.virusEffects.onUpgradePurchased(up.id, up.count);
-            }
-            return true;
-        } else {
+        const info = this.getUpgradeCostFor(upgradeId, amount);
+        if (!info.canAfford) {
             window.retroAudio.playError();
             return false;
         }
+
+        this.bytes -= info.totalCost;
+        up.count += info.count;
+        // Classic 1.15x cost scaling for next single level
+        up.cost = Math.floor(up.baseCost * Math.pow(1.15, up.count));
+        this.recalcTotals();
+
+        window.retroAudio.ensureContext();
+        window.retroAudio.playDing();
+
+        if (up.id === 'bonzi') this.unlockAchievement('bonzi_unlocked');
+
+        this.updateDamage();
+
+        if (window.virusEffects) {
+            window.virusEffects.onUpgradePurchased(up.id, up.count);
+        }
+        return true;
     }
 
     // Buy a click upgrade

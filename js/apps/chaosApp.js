@@ -6,6 +6,7 @@ class ChaosApp {
     constructor() {
         this.winId = 'app-chaos-engine';
         this.currentTab = 'viruses'; // 'viruses' | 'clickers' | 'stats'
+        this.buyMultiplier = '1'; // '1' | '5' | '10' | 'max'
     }
 
     open() {
@@ -117,12 +118,25 @@ class ChaosApp {
 
         if (tabName === 'viruses') {
             container.innerHTML = `
+                <div class="shop-multiplier-bar">
+                    <span class="mult-bar-title">QUANTITÉ D'ACHAT :</span>
+                    <div class="mult-btn-group">
+                        <button class="win-btn mult-btn ${this.buyMultiplier === '1' ? 'active' : ''}" data-mult="1">x1</button>
+                        <button class="win-btn mult-btn ${this.buyMultiplier === '5' ? 'active' : ''}" data-mult="5">x5</button>
+                        <button class="win-btn mult-btn ${this.buyMultiplier === '10' ? 'active' : ''}" data-mult="10">x10</button>
+                        <button class="win-btn mult-btn ${this.buyMultiplier === 'max' ? 'active' : ''}" data-mult="max">MAX</button>
+                    </div>
+                </div>
                 <div class="shop-list">
                     ${window.gameEngine.upgrades.map(u => {
-                const canAfford = window.gameEngine.bytes >= u.cost;
+                const costInfo = window.gameEngine.getUpgradeCostFor(u.id, this.buyMultiplier);
                 const iconSvg = RetroIcons[u.icon] || RetroIcons.chaosEngine;
+                const labelText = this.buyMultiplier === 'max'
+                    ? (costInfo.canAfford ? `Acheter x${costInfo.count}` : 'Acheter x1 (Max 0)')
+                    : (this.buyMultiplier === '1' ? 'Acheter' : `Acheter x${this.buyMultiplier}`);
+
                 return `
-                            <div class="shop-item ${canAfford ? 'affordable' : 'locked'}">
+                            <div class="shop-item ${costInfo.canAfford ? 'affordable' : 'locked'}">
                                 <div class="shop-item-icon">${iconSvg}</div>
                                 <div class="shop-item-details">
                                     <div class="shop-item-header">
@@ -130,12 +144,18 @@ class ChaosApp {
                                         <span class="shop-item-count">Niv. ${u.count}</span>
                                     </div>
                                     <div class="shop-item-desc">${u.desc}</div>
-                                    <div class="shop-item-sub">Production : +${window.gameEngine.formatNumber(u.cps)}/s</div>
+                                    <div class="shop-item-sub">Production : +${window.gameEngine.formatNumber(u.cps * (costInfo.count || 1))}/s ${costInfo.count > 1 ? `(+${costInfo.count} niv.)` : ''}</div>
                                 </div>
                                 <div class="shop-item-action">
-                                    <button class="win-btn shop-buy-btn" data-upgrade-id="${u.id}" ${canAfford ? '' : 'disabled'}>
-                                        Acheter<br><strong>${window.gameEngine.formatNumber(u.cost)}</strong>
+                                    <button class="win-btn shop-buy-btn" data-upgrade-id="${u.id}" ${costInfo.canAfford ? '' : 'disabled'}>
+                                        ${labelText}<br><strong>${window.gameEngine.formatNumber(costInfo.totalCost)}</strong>
                                     </button>
+                                    <div class="shop-quick-btns">
+                                        <button class="win-btn quick-buy-btn" data-upgrade-id="${u.id}" data-mult="1" title="Acheter 1 niveau">+1</button>
+                                        <button class="win-btn quick-buy-btn" data-upgrade-id="${u.id}" data-mult="5" title="Acheter 5 niveaux">+5</button>
+                                        <button class="win-btn quick-buy-btn" data-upgrade-id="${u.id}" data-mult="10" title="Acheter 10 niveaux">+10</button>
+                                        <button class="win-btn quick-buy-btn" data-upgrade-id="${u.id}" data-mult="max" title="Acheter le maximum possible">MAX</button>
+                                    </div>
                                 </div>
                             </div>
                         `;
@@ -143,11 +163,33 @@ class ChaosApp {
                 </div>
             `;
 
-            // Bind upgrade buy buttons
+            // Bind multiplier selector buttons
+            container.querySelectorAll('.mult-btn').forEach(mb => {
+                mb.onclick = () => {
+                    this.buyMultiplier = mb.dataset.mult;
+                    window.retroAudio.playClick();
+                    this.renderTab('viruses');
+                };
+            });
+
+            // Bind upgrade main buy buttons
             container.querySelectorAll('.shop-buy-btn').forEach(b => {
                 b.onclick = () => {
                     const upId = b.dataset.upgradeId;
-                    if (window.gameEngine.buyUpgrade(upId)) {
+                    if (window.gameEngine.buyUpgrade(upId, this.buyMultiplier)) {
+                        this.renderTab('viruses');
+                        this.updateUi();
+                    }
+                };
+            });
+
+            // Bind quick buy buttons (+1, +5, +10, MAX)
+            container.querySelectorAll('.quick-buy-btn').forEach(qb => {
+                qb.onclick = (e) => {
+                    e.stopPropagation();
+                    const upId = qb.dataset.upgradeId;
+                    const mult = qb.dataset.mult;
+                    if (window.gameEngine.buyUpgrade(upId, mult)) {
                         this.renderTab('viruses');
                         this.updateUi();
                     }
@@ -306,10 +348,18 @@ class ChaosApp {
             btns.forEach(b => {
                 const u = window.gameEngine.upgrades.find(x => x.id === b.dataset.upgradeId);
                 if (u) {
-                    b.disabled = window.gameEngine.bytes < u.cost;
+                    const costInfo = window.gameEngine.getUpgradeCostFor(u.id, this.buyMultiplier);
+                    b.disabled = !costInfo.canAfford;
+
+                    const labelText = this.buyMultiplier === 'max'
+                        ? (costInfo.canAfford ? `Acheter x${costInfo.count}` : 'Acheter x1 (Max 0)')
+                        : (this.buyMultiplier === '1' ? 'Acheter' : `Acheter x${this.buyMultiplier}`);
+
+                    b.innerHTML = `${labelText}<br><strong>${window.gameEngine.formatNumber(costInfo.totalCost)}</strong>`;
+
                     const item = b.closest('.shop-item');
                     if (item) {
-                        if (window.gameEngine.bytes >= u.cost) {
+                        if (costInfo.canAfford) {
                             item.classList.add('affordable');
                             item.classList.remove('locked');
                         } else {
@@ -318,6 +368,14 @@ class ChaosApp {
                         }
                     }
                 }
+            });
+
+            const quickBtns = document.querySelectorAll('.quick-buy-btn');
+            quickBtns.forEach(qb => {
+                const upId = qb.dataset.upgradeId;
+                const mult = qb.dataset.mult;
+                const costInfo = window.gameEngine.getUpgradeCostFor(upId, mult);
+                qb.disabled = !costInfo.canAfford;
             });
         }
     }

@@ -845,10 +845,77 @@ body.glitch-stage-apocalypse {
     font-weight: bold;
 }
 
+/* Multiplier Bar */
+.shop-multiplier-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--win-bg);
+    border-bottom: 2px solid var(--win-dark);
+    padding: 4px 6px;
+    margin-bottom: 5px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.mult-bar-title {
+    color: #222222;
+    letter-spacing: 0.5px;
+    font-size: 10px;
+}
+
+.mult-btn-group {
+    display: flex;
+    gap: 3px;
+}
+
+.mult-btn {
+    min-width: 38px;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+
+.mult-btn.active {
+    background-color: #000080;
+    color: #ffffff;
+    border-top: 2px solid var(--win-darkest);
+    border-left: 2px solid var(--win-darkest);
+    border-right: 2px solid var(--win-light);
+    border-bottom: 2px solid var(--win-light);
+}
+
+.shop-item-action {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: stretch;
+    min-width: 100px;
+}
+
 .shop-buy-btn {
-    min-width: 90px;
+    width: 100%;
     line-height: 1.2;
     text-align: center;
+    font-size: 11px;
+    padding: 3px 4px;
+}
+
+.shop-quick-btns {
+    display: flex;
+    gap: 2px;
+    justify-content: space-between;
+}
+
+.quick-buy-btn {
+    flex: 1;
+    font-size: 9px;
+    padding: 1px 2px;
+    min-width: 22px;
+    line-height: 1.1;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 /* Prestige Panel */

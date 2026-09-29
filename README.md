@@ -84,6 +84,10 @@ Aucun serveur, aucun Node.js ni commande `npm install` n'est nécessaire.
   13. ⏳ *Bug de l'An 2000 (Y2K)* : L'horloge système remonte le temps jusqu'au `01/01/1900 00:00` avec glitch disco.
 * **Améliorations de Clic** :
   * Nettoyer la boule de souris poussiéreuse, port PS/2 cadencé à 200 Hz, double-clic rageur, taper sur le flanc de l'écran cathodique, corrompre Clippy...
+* **🛒 Boutons d'Achat Multiple (x1, x5, x10, MAX)** :
+  * Une barre de sélection globale dans la boutique du Générateur de Chaos permet d'acheter en masse : **x1**, **x5**, **x10** ou **MAX** (le maximum de niveaux abordables en 1 clic !).
+  * Chaque virus dispose également de mini-boutons d'achat rapide individuels (`+1`, `+5`, `+10`, `MAX`) directement intégrés dans sa ligne.
+  * Les coûts cumulés et les gains de production sont calculés et mis à jour en temps réel à 60 FPS avec la progression exponentielle (1,15x par niveau).
 * **Système de Prestige (Format C: /U)** :
   * Lorsque les dégâts dépassent 100%, vous pouvez réinstaller Bouzedows pour gagner des **Processeurs Surchauffés** conférant un bonus permanent de multiplicateur de destruction (+25% par réinstallation).
 * **📈 Scaling Dynamique Infini de TOUTES les Récompenses d'Octets** :
