@@ -44,11 +44,12 @@ class GlitchController {
             this.body.classList.add('glitch-stage-apocalypse');
         }
 
-        // Random error dialogue spawning as damage rises
-        if (damage >= 35) {
+        // Random error dialogue spawning as damage rises (divided by 4 frequency)
+        if (damage >= 45) {
             const now = Date.now();
-            const interval = Math.max(12000, 50000 / (1 + damage * 0.005));
-            if (now - this.lastDialogSpawn > interval && Math.random() < 0.5) {
+            // Interval divided by 4 frequency (4x longer: 48s min, 200s base)
+            const interval = Math.max(48000, 200000 / (1 + damage * 0.005));
+            if (now - this.lastDialogSpawn > interval && Math.random() < 0.25) {
                 this.lastDialogSpawn = now;
                 if (window.windowManager) {
                     window.windowManager.spawnErrorDialog();

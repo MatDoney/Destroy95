@@ -47,6 +47,22 @@ Aucun serveur, aucun Node.js ni commande `npm install` n'est nécessaire.
 
 ## 🎮 Fonctionnalités Principales
 
+### 🔐 0. Écran de Connexion Windows XP (Au Démarrage)
+* **Écran de Bienvenue Windows XP Authentique** :
+  * Dès l'ouverture du jeu, l'écran bleu iconique de Windows XP s'affiche avec la marguerite orange classique, le logo Microsoft Windows XP et les barres bleu nuit.
+* **Saisie Automatique « Hacker Hollywood » au Clavier** :
+  * Il suffit de taper n'importe quelles touches sur votre clavier pour saisir automatiquement les identifiants :
+    * Nom d'utilisateur : **`Henry PC`**
+    * Mot de passe : **`••••••••••••`**
+  * La touche `Entrée` permet de valider le champ et d'ouvrir la session.
+  * Un bouton **« ⚡ Connexion Rapide (1-Clic) »** est également disponible pour se connecter instantanément en un clic.
+* **Jingle de Démarrage Windows XP & « Bienvenue... »** :
+  * À la validation, le statut passe en `Bienvenue...` et le **fameux carillon de démarrage de Windows XP** est joué via l'API Web Audio (100% synthétisé en temps réel), avant une transition fluide vers le bureau Windows 95.
+* **Re-verrouillage à tout moment** :
+  * Un élément **« 🔒 Fermer la session (Écran XP) »** dans le menu Démarrer permet de réafficher l'écran de bienvenue XP à n'importe quel moment sans recharger la page.
+
+---
+
 ### 💥 1. Le Moteur de Destruction & Clicker
 * **Scaling Infini (Aucun plafond à 100%)** :
   * Les dégâts système grimpent sans limite : `150%`, `500%`, `2 500%`, `50 000%+`.
@@ -97,7 +113,9 @@ Au fur et à mesure que la corruption augmente ou lors de clics rapides, des **f
 **Richesse Visuelle & Interactions :**
 * **Double Illustration Dédiée** : Chaque pop-up intègre à la fois une **bannière graphique animée rétro (320x80)** et un **cadre photo / miniature parodique (70x70)** au format SVG vectoriel haute fidélité (100% autonome, zéro téléchargement réseau, zéro 404).
 * Cliquer sur le bouton d'une pub rapporte un **gros bonus d'octets corrompus**.
-* Fermer une pub avec la croix a 25% de chance d'en engendrer une nouvelle (l'authentique effet hydre des pop-ups des années 2000).
+* **Fréquence Équilibrée (Divisée par 4)** : Les pop-ups et alertes système apparaissent à un rythme mesuré et agréable sans saturer l'écran (avec un maximum de 6 pop-ups et 3 erreurs simultanées).
+* **Boîtes d'Erreurs Rétro Épurées** : Les fenêtres d'erreur système disposent uniquement des boutons **« OK »** et **« Attendre »**.
+* Fermer une pub avec la croix a une faible chance (6%) d'en engendrer une nouvelle (l'authentique clin d'œil à l'effet hydre des pop-ups des années 2000).
 * Un bouton **« PUB ✕ »** dans la barre des tâches (AdBlock 95) ou dans le menu Démarrer permet de tout fermer d'un coup.
 * Un raccourci **« Ouvrir un Pop-up Publicitaire »** dans le menu Démarrer permet d'invoquer instantanément une publicité pour tester.
 

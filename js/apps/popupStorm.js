@@ -9,7 +9,7 @@ class PopupManager {
     constructor() {
         this.popups = new Map(); // id -> element
         this.counter = 0;
-        this.maxPopups = 18;
+        this.maxPopups = 6;
         this.lastAutoSpawn = 0;
 
         this.adTemplates = [
@@ -1035,8 +1035,8 @@ class PopupManager {
                 e.stopPropagation();
                 window.retroAudio.playClick();
 
-                // 25% chance to spawn another popup on close (classic 2000s popup hydra)
-                if (Math.random() < 0.25 && this.popups.size < this.maxPopups) {
+                // 6% chance to spawn another popup on close (divided by 4)
+                if (Math.random() < 0.06 && this.popups.size < this.maxPopups) {
                     setTimeout(() => this.spawnPopup(), 150);
                 }
 
@@ -1105,23 +1105,24 @@ class PopupManager {
         }
     }
 
-    // Called on clicks or actions: chance to spawn popups based on destruction level
+    // Called on clicks or actions: chance to spawn popups based on destruction level (divided by 4)
     maybeSpawnOnAction(damage) {
-        if (damage < 5) return;
+        if (damage < 15) return;
 
-        // Chance scales with damage
-        const chance = Math.min(0.28, 0.03 + (damage / 2500));
+        // Chance divided by 4: max 7%, base 0.75%
+        const chance = Math.min(0.07, 0.0075 + (damage / 10000));
         if (Math.random() < chance) {
             this.spawnPopup();
         }
     }
 
-    // Called periodically from main game loop
+    // Called periodically from main game loop (frequency divided by 4)
     checkAutoSpawn(damage) {
-        if (damage < 8) return;
+        if (damage < 20) return;
 
         const now = Date.now();
-        const interval = Math.max(2200, 28000 / (1 + damage * 0.008));
+        // Interval multiplied by 4: 112s base, 8.8s minimum
+        const interval = Math.max(8800, 112000 / (1 + damage * 0.008));
 
         if (now - this.lastAutoSpawn > interval) {
             this.lastAutoSpawn = now;

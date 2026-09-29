@@ -371,6 +371,10 @@ class WindowManager {
         const title = customTitle || titles[Math.floor(Math.random() * titles.length)];
         const id = 'err_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
 
+        // Cap concurrent error dialogs on screen
+        const existingErrors = document.querySelectorAll('.retro-window[id^="err_"]');
+        if (existingErrors.length >= 3) return null;
+
         if (window.retroAudio) {
             window.retroAudio.playError();
         }
@@ -390,9 +394,8 @@ class WindowManager {
                     </div>
                 </div>
                 <div class="error-dialog-buttons">
-                    <button class="win-btn retro-btn-action" data-action="cancel">Abandonner</button>
-                    <button class="win-btn retro-btn-action" data-action="retry">Recommencer</button>
-                    <button class="win-btn retro-btn-action" data-action="ignore">Ignorer</button>
+                    <button class="win-btn retro-btn-action" data-action="ok" style="min-width: 75px;">OK</button>
+                    <button class="win-btn retro-btn-action" data-action="wait" style="min-width: 75px;">Attendre</button>
                 </div>
             </div>
         `;
@@ -410,14 +413,16 @@ class WindowManager {
             resizable: false
         });
 
-        // Add button actions
+        // Add button actions (only OK and Attendre)
         const btns = winObj.el.querySelectorAll('.retro-btn-action');
         btns.forEach(btn => {
             btn.onclick = () => {
-                window.retroAudio.playClick();
-                // Clicking "Recommencer" might trigger another error!
-                if (btn.dataset.action === 'retry' && Math.random() < 0.4) {
-                    this.spawnErrorDialog();
+                if (window.retroAudio) window.retroAudio.playClick();
+                if (btn.dataset.action === 'wait') {
+                    document.body.style.cursor = 'wait';
+                    setTimeout(() => {
+                        document.body.style.cursor = '';
+                    }, 1200);
                 }
                 this.closeWindow(id);
             };

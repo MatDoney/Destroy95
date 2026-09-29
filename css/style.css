@@ -1620,10 +1620,16 @@ body.glitch-stage-apocalypse {
 
 .error-dialog-buttons {
     display: flex;
-    justify-content: flex-end;
-    gap: 6px;
+    justify-content: center;
+    gap: 12px;
     padding-top: 8px;
     border-top: 1px solid #dfdfdf;
+}
+
+.error-dialog-buttons .win-btn {
+    min-width: 80px;
+    padding: 3px 14px;
+    font-weight: 500;
 }
 
 /* ==========================================================================
@@ -2242,7 +2248,8 @@ body.glitch-stage-apocalypse {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: radial-gradient(circle at 50% 50%, #5a7edc 0%, #385cb6 50%, #204193 100%);
+    background-color: #5a7edc;
+    background: linear-gradient(180deg, #5a7edc 0%, #4d72d2 50%, #4065c7 100%);
     font-family: 'Segoe UI', Tahoma, Verdana, Arial, sans-serif;
     color: #ffffff;
     user-select: none;
@@ -2257,40 +2264,42 @@ body.glitch-stage-apocalypse {
 
 /* Top Dark Navy Bar */
 .xp-top-bar {
-    height: 64px;
-    background: linear-gradient(to bottom, #001f5c, #002e88);
+    height: 68px;
+    background: linear-gradient(to bottom, #001850, #00267a);
     position: relative;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    border-bottom: 2px solid #ffffff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
 }
 
 .xp-top-highlight {
     position: absolute;
-    bottom: 0;
+    bottom: -4px;
     left: 0;
     right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent 5%, rgba(255, 255, 255, 0.8) 50%, transparent 95%);
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, #e05500 15%, #ff8000 35%, #ffffff 50%, #ff8000 65%, #e05500 85%, transparent 100%);
+    box-shadow: 0 0 6px rgba(255, 128, 0, 0.8);
 }
 
 /* Bottom Dark Navy Bar */
 .xp-bottom-bar {
-    height: 80px;
-    background: linear-gradient(to top, #001642, #002878);
+    height: 84px;
+    background: linear-gradient(to top, #001440, #00226c);
     position: relative;
-    border-top: 2px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.4);
+    border-top: 2px solid #ffffff;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.35);
     display: flex;
     align-items: center;
 }
 
 .xp-bottom-highlight {
     position: absolute;
-    top: 0;
+    top: -4px;
     left: 0;
     right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent 5%, rgba(255, 255, 255, 0.8) 50%, transparent 95%);
+    height: 3px;
+    background: linear-gradient(90deg, transparent 0%, #e05500 15%, #ff8000 35%, #ffffff 50%, #ff8000 65%, #e05500 85%, transparent 100%);
+    box-shadow: 0 0 6px rgba(255, 128, 0, 0.8);
 }
 
 .xp-bottom-content {
@@ -2445,26 +2454,28 @@ body.glitch-stage-apocalypse {
 .xp-user-card {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 12px 18px;
+    gap: 18px;
+    padding: 14px 20px;
     border-radius: 8px;
-    background: rgba(0, 24, 80, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-    min-width: 340px;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    min-width: 350px;
+    backdrop-filter: blur(2px);
+    transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
 
 .xp-user-card:hover {
-    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.26);
+    border-color: rgba(255, 255, 255, 0.7);
 }
 
 .xp-avatar-box {
-    width: 66px;
-    height: 66px;
+    width: 68px;
+    height: 68px;
     border-radius: 6px;
     border: 3px solid #ffffff;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4), inset 0 0 0 1px #ffaa00;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35), inset 0 0 0 1px #ffaa00;
     overflow: hidden;
     background: #ff7700;
     flex-shrink: 0;
@@ -2489,10 +2500,10 @@ body.glitch-stage-apocalypse {
 }
 
 .xp-user-name-display {
-    font-size: 17px;
+    font-size: 20px;
     font-weight: bold;
     color: #ffffff;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
     letter-spacing: 0.3px;
 }
 
@@ -2591,16 +2602,16 @@ body.glitch-stage-apocalypse {
 .xp-keyboard-tip {
     display: flex;
     align-items: center;
-    gap: 8px;
-    max-width: 340px;
-    background: rgba(0, 0, 0, 0.25);
-    border: 1px dashed rgba(255, 255, 255, 0.35);
+    gap: 10px;
+    max-width: 350px;
+    background: rgba(0, 24, 80, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.35);
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 11px;
     line-height: 1.4;
-    color: #ffffaa;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .xp-tip-icon {

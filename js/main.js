@@ -355,6 +355,9 @@ function setupStartMenu() {
     bindMenu('#sm-item-clippy', () => window.clippyCompanion.showRandomQuote());
     bindMenu('#sm-item-test-popup', () => window.popupManager.spawnPopup());
     bindMenu('#sm-item-popups', () => window.popupManager.closeAllPopups());
+    bindMenu('#sm-item-lock', () => {
+        if (window.xpLoginScreen) window.xpLoginScreen.lock();
+    });
     bindMenu('#sm-item-restart', () => {
         if (confirm("Voulez-vous redémarrer le système d'exploitation Windows 95 ?")) {
             window.location.reload();
