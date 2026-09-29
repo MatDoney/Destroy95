@@ -1,5 +1,5 @@
 /**
- * Windows 95 MS Paint (Paintbrush)
+ * Bouzedows MS Paint (Paintbrush)
  * Classic drawing canvas with pencil, brush, spray can, bucket fill, eraser, and 16-color palette.
  */
 
@@ -260,11 +260,10 @@ class PaintApp {
         this.ctx.putImageData(imgData, 0, 0);
 
         if (window.gameEngine) {
-            const bonus = 400;
-            window.gameEngine.bytes += bonus;
-            window.gameEngine.totalBytes += bonus;
-            window.gameEngine.updateDamage();
-            window.gameEngine.spawnFloatText(`+${bonus} Octets (Buffer Corrompu)`, window.innerWidth / 2, window.innerHeight / 2);
+            window.gameEngine.addReward(400, 'Buffer Corrompu', {
+                clientX: window.innerWidth / 2,
+                clientY: window.innerHeight / 2
+            });
         }
     }
 }

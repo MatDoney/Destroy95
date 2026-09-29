@@ -1,5 +1,5 @@
 /**
- * Windows 95 / Office 97 Assistant: Clippy (Le Trombone)
+ * Bouzedows / Office 97 Assistant: Clippy (Le Trombone)
  * Animated assistant with sarcastic advice, glitch states, and interactive dialogue.
  */
 
@@ -11,7 +11,7 @@ class ClippyCompanion {
         this.visible = false;
         this.quotes = [
             {
-                text: "Il semblerait que vous essayiez de faire planter ce PC. Voulez-vous que je supprime C:\\WINDOWS\\SYSTEM32 pour gagner du temps ?",
+                text: "Il semblerait que vous essayiez de faire planter ce PC. Voulez-vous que je supprime C:\\BOUZEDOWS\\SYSTEM32 pour gagner du temps ?",
                 yesBonus: 500,
                 yesMsg: "C'est parti ! 412 fichiers DLL ont été effacés."
             },
@@ -110,10 +110,10 @@ class ClippyCompanion {
             yesBtn.onclick = () => {
                 window.retroAudio.playAsterisk();
                 if (window.gameEngine) {
-                    window.gameEngine.bytes += q.yesBonus;
-                    window.gameEngine.totalBytes += q.yesBonus;
-                    window.gameEngine.updateDamage();
-                    window.gameEngine.spawnFloatText(`+${q.yesBonus} Octets`, window.innerWidth - 150, window.innerHeight - 150);
+                    window.gameEngine.addReward(q.yesBonus, 'Clippy', {
+                        clientX: window.innerWidth - 150,
+                        clientY: window.innerHeight - 150
+                    });
                 }
                 this.showCustomMessage(q.yesMsg, 2500);
                 setTimeout(() => this.hide(), 2500);

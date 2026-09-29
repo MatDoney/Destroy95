@@ -1,5 +1,5 @@
 /**
- * Authentic Windows 95 Minesweeper (Démineur)
+ * Authentic Bouzedows Minesweeper (Démineur)
  * Fully playable 9x9 grid with 10 mines, timer, smiley face, and retro sounds.
  */
 
@@ -267,11 +267,10 @@ class MinesweeperApp {
 
         // Destruction game tie-in: Exploding a mine corrupts the system slightly!
         if (window.gameEngine) {
-            const bonusDmg = 250;
-            window.gameEngine.bytes += bonusDmg;
-            window.gameEngine.totalBytes += bonusDmg;
-            window.gameEngine.updateDamage();
-            window.gameEngine.spawnFloatText(`+${bonusDmg} Octets (BOOM!)`, window.innerWidth / 2, window.innerHeight / 2);
+            window.gameEngine.addReward(250, 'BOOM!', {
+                clientX: window.innerWidth / 2,
+                clientY: window.innerHeight / 2
+            });
         }
     }
 
@@ -309,10 +308,8 @@ class MinesweeperApp {
             this.updateLed('ms-mines-count', 0);
 
             if (window.gameEngine) {
-                const reward = 5000;
-                window.gameEngine.bytes += reward;
-                window.gameEngine.totalBytes += reward;
-                window.gameEngine.showNotification('🎉 Victoire au Démineur !', `Vous avez nettoyé le champ de mines et récupéré ${reward} octets !`);
+                const reward = window.gameEngine.addReward(5000, 'Victoire Démineur');
+                window.gameEngine.showNotification('🎉 Victoire au Démineur !', `Vous avez nettoyé le champ de mines et récupéré ${window.gameEngine.formatNumber(reward)} octets !`);
             }
         }
     }

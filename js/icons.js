@@ -1,9 +1,9 @@
 /**
- * Pixel-perfect retro icons for Windows 95/98 desktop and applications.
+ * Pixel-perfect retro icons for Bouzedows/98 desktop and applications.
  * Clean SVGs with authentic 16-color/256-color retro palette.
  */
 const RetroIcons = {
-    // Windows 95 Start Flag
+    // Bouzedows Start Flag
     startLogo: `
     <svg viewBox="0 0 16 16" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="1" y="2" width="6" height="5" fill="#ff0000" />

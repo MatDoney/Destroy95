@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Windows 95 Destruction Simulator & Clicker - Core Retro Design System
+   Bouzedows Destruction Simulator & Clicker - Core Retro Design System
    ========================================================================== */
 
 :root {
@@ -24,7 +24,8 @@
     -webkit-user-select: none;
 }
 
-html, body {
+html,
+body {
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -47,7 +48,7 @@ html, body {
     pointer-events: none;
     z-index: 99999;
     background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.22) 50%),
-                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
     background-size: 100% 3px, 4px 100%;
     box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.45);
     transition: opacity 0.3s;
@@ -59,13 +60,40 @@ html, body {
 
 /* Degauss magnetic coil wobble animation */
 @keyframes degaussWobble {
-    0% { transform: scale(1) skew(0deg); filter: contrast(1) hue-rotate(0deg); }
-    10% { transform: scale(1.06, 0.95) skew(5deg); filter: contrast(2.5) hue-rotate(90deg) brightness(1.5); }
-    25% { transform: scale(0.96, 1.05) skew(-6deg); filter: contrast(2) hue-rotate(180deg); }
-    40% { transform: scale(1.04, 0.97) skew(4deg); filter: contrast(1.7) hue-rotate(270deg); }
-    60% { transform: scale(0.98, 1.02) skew(-2deg); filter: contrast(1.4) hue-rotate(360deg); }
-    80% { transform: scale(1.01, 0.99) skew(1deg); filter: contrast(1.1); }
-    100% { transform: scale(1) skew(0deg); filter: contrast(1); }
+    0% {
+        transform: scale(1) skew(0deg);
+        filter: contrast(1) hue-rotate(0deg);
+    }
+
+    10% {
+        transform: scale(1.06, 0.95) skew(5deg);
+        filter: contrast(2.5) hue-rotate(90deg) brightness(1.5);
+    }
+
+    25% {
+        transform: scale(0.96, 1.05) skew(-6deg);
+        filter: contrast(2) hue-rotate(180deg);
+    }
+
+    40% {
+        transform: scale(1.04, 0.97) skew(4deg);
+        filter: contrast(1.7) hue-rotate(270deg);
+    }
+
+    60% {
+        transform: scale(0.98, 1.02) skew(-2deg);
+        filter: contrast(1.4) hue-rotate(360deg);
+    }
+
+    80% {
+        transform: scale(1.01, 0.99) skew(1deg);
+        filter: contrast(1.1);
+    }
+
+    100% {
+        transform: scale(1) skew(0deg);
+        filter: contrast(1);
+    }
 }
 
 body.degauss-active {
@@ -74,12 +102,29 @@ body.degauss-active {
 
 /* Screen Shake effect */
 @keyframes screenShakeAnim {
-    0% { transform: translate(0, 0); }
-    20% { transform: translate(-5px, 4px); }
-    40% { transform: translate(5px, -3px); }
-    60% { transform: translate(-3px, 2px); }
-    80% { transform: translate(3px, -1px); }
-    100% { transform: translate(0, 0); }
+    0% {
+        transform: translate(0, 0);
+    }
+
+    20% {
+        transform: translate(-5px, 4px);
+    }
+
+    40% {
+        transform: translate(5px, -3px);
+    }
+
+    60% {
+        transform: translate(-3px, 2px);
+    }
+
+    80% {
+        transform: translate(3px, -1px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
 }
 
 #desktop.screen-shake {
@@ -193,7 +238,7 @@ body.glitch-stage-apocalypse {
 }
 
 /* ==========================================================================
-   Retro Beveled Buttons & Windows Components
+   Retro Beveled Buttons & Bouzedows Components
    ========================================================================== */
 
 .win-btn {
@@ -214,7 +259,8 @@ body.glitch-stage-apocalypse {
     justify-content: center;
 }
 
-.win-btn:active, .win-btn.active {
+.win-btn:active,
+.win-btn.active {
     border-top: 2px solid var(--win-black);
     border-left: 2px solid var(--win-black);
     border-right: 2px solid var(--win-light);
@@ -230,7 +276,8 @@ body.glitch-stage-apocalypse {
     border-color: var(--win-dark);
 }
 
-.win-input, .win-select {
+.win-input,
+.win-select {
     background-color: #ffffff;
     color: #000000;
     border-top: 2px solid var(--win-dark);
@@ -245,7 +292,7 @@ body.glitch-stage-apocalypse {
 }
 
 /* ==========================================================================
-   Windows 95 Window Frame Architecture
+   Bouzedows Window Frame Architecture
    ========================================================================== */
 
 .retro-window {
@@ -319,7 +366,9 @@ body.glitch-stage-apocalypse {
     gap: 2px;
 }
 
-.win-btn-min, .win-btn-max, .win-btn-close {
+.win-btn-min,
+.win-btn-max,
+.win-btn-close {
     width: 16px;
     height: 14px;
     font-size: 10px;
@@ -376,7 +425,8 @@ body.glitch-stage-apocalypse {
     font-size: 11px;
 }
 
-.start-btn:active, .start-btn.active {
+.start-btn:active,
+.start-btn.active {
     border-top: 2px solid var(--win-black);
     border-left: 2px solid var(--win-black);
     border-right: 2px solid var(--win-light);
@@ -655,7 +705,8 @@ body.glitch-stage-apocalypse {
     transition: transform 0.05s;
 }
 
-.chaos-big-target-btn:active, .chaos-big-target-btn.pressed-pulse {
+.chaos-big-target-btn:active,
+.chaos-big-target-btn.pressed-pulse {
     border-top: 3px solid var(--win-black);
     border-left: 3px solid var(--win-black);
     border-right: 3px solid var(--win-light);
@@ -850,9 +901,20 @@ body.glitch-stage-apocalypse {
 }
 
 @keyframes floatUpFade {
-    0% { transform: translate(-50%, 0) scale(0.9); opacity: 1; }
-    50% { transform: translate(-50%, -25px) scale(1.15); opacity: 1; }
-    100% { transform: translate(-50%, -50px) scale(0.9); opacity: 0; }
+    0% {
+        transform: translate(-50%, 0) scale(0.9);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translate(-50%, -25px) scale(1.15);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50px) scale(0.9);
+        opacity: 0;
+    }
 }
 
 /* ==========================================================================
@@ -979,14 +1041,37 @@ body.glitch-stage-apocalypse {
     background-color: #ff0000;
 }
 
-.ms-cell.num-1 { color: #0000ff; }
-.ms-cell.num-2 { color: #008000; }
-.ms-cell.num-3 { color: #ff0000; }
-.ms-cell.num-4 { color: #000080; }
-.ms-cell.num-5 { color: #800000; }
-.ms-cell.num-6 { color: #008080; }
-.ms-cell.num-7 { color: #000000; }
-.ms-cell.num-8 { color: #808080; }
+.ms-cell.num-1 {
+    color: #0000ff;
+}
+
+.ms-cell.num-2 {
+    color: #008000;
+}
+
+.ms-cell.num-3 {
+    color: #ff0000;
+}
+
+.ms-cell.num-4 {
+    color: #000080;
+}
+
+.ms-cell.num-5 {
+    color: #800000;
+}
+
+.ms-cell.num-6 {
+    color: #008080;
+}
+
+.ms-cell.num-7 {
+    color: #000000;
+}
+
+.ms-cell.num-8 {
+    color: #808080;
+}
 
 /* ==========================================================================
    Pinball Space Cadet Styles
@@ -1011,7 +1096,8 @@ body.glitch-stage-apocalypse {
     border: 1px solid #333388;
 }
 
-.pinball-score-box, .pinball-balls-box {
+.pinball-score-box,
+.pinball-balls-box {
     display: flex;
     flex-direction: column;
 }
@@ -1205,11 +1291,26 @@ body.glitch-stage-apocalypse {
     height: 100%;
 }
 
-.cluster-block.alloc { background-color: #0000aa; }
-.cluster-block.free { background-color: #ffffff; border: 1px solid #e0e0e0; }
-.cluster-block.read { background-color: #ffff00; }
-.cluster-block.write { background-color: #00aa00; }
-.cluster-block.bad { background-color: #aa00aa; }
+.cluster-block.alloc {
+    background-color: #0000aa;
+}
+
+.cluster-block.free {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+.cluster-block.read {
+    background-color: #ffff00;
+}
+
+.cluster-block.write {
+    background-color: #00aa00;
+}
+
+.cluster-block.bad {
+    background-color: #aa00aa;
+}
 
 .defrag-legend {
     display: flex;
@@ -1230,11 +1331,26 @@ body.glitch-stage-apocalypse {
     display: inline-block;
 }
 
-.col-alloc { background-color: #0000aa; }
-.col-free { background-color: #ffffff; border: 1px solid #808080; }
-.col-read { background-color: #ffff00; }
-.col-write { background-color: #00aa00; }
-.col-bad { background-color: #aa00aa; }
+.col-alloc {
+    background-color: #0000aa;
+}
+
+.col-free {
+    background-color: #ffffff;
+    border: 1px solid #808080;
+}
+
+.col-read {
+    background-color: #ffff00;
+}
+
+.col-write {
+    background-color: #00aa00;
+}
+
+.col-bad {
+    background-color: #aa00aa;
+}
 
 .defrag-controls {
     display: flex;
@@ -1367,6 +1483,33 @@ body.glitch-stage-apocalypse {
     border-bottom: 1px solid var(--win-dark);
 }
 
+.browser-favorites-bar {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 4px;
+    background-color: var(--win-gray);
+    border-bottom: 1px solid var(--win-dark);
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: thin;
+}
+
+.fav-label {
+    font-size: 9px;
+    font-weight: bold;
+    color: #333333;
+    margin-right: 2px;
+    flex-shrink: 0;
+}
+
+.fav-btn {
+    font-size: 9px;
+    padding: 1px 4px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
 .addr-input {
     flex: 1;
 }
@@ -1445,8 +1588,16 @@ body.glitch-stage-apocalypse {
 }
 
 @keyframes blinkAnim {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
+
+    0%,
+    49% {
+        opacity: 1;
+    }
+
+    50%,
+    100% {
+        opacity: 0;
+    }
 }
 
 .ram-box {
@@ -1509,6 +1660,705 @@ body.glitch-stage-apocalypse {
     padding: 6px;
     border: 1px solid #dcdcdc;
     background-color: #f9f9f9;
+}
+
+/* --- Bouzgle (Google 1998 Parody) --- */
+.web-bouzgle {
+    text-align: center;
+    padding: 20px 10px;
+    font-family: Arial, sans-serif;
+}
+
+.bouzgle-logo {
+    font-size: 38px;
+    font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
+    letter-spacing: -1px;
+    margin-bottom: 2px;
+}
+
+.b-b {
+    color: #2040d0;
+}
+
+.b-o1 {
+    color: #e62020;
+}
+
+.b-u {
+    color: #f5b000;
+}
+
+.b-z {
+    color: #2040d0;
+}
+
+.b-g {
+    color: #009920;
+}
+
+.b-l {
+    color: #e62020;
+}
+
+.b-e {
+    color: #2040d0;
+}
+
+.bouzgle-sub {
+    font-size: 11px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.bouzgle-search-box {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 14px;
+}
+
+.bouzgle-search-input {
+    width: 280px;
+}
+
+.bouzgle-links-row {
+    font-size: 11px;
+    color: #0000cc;
+    margin-bottom: 15px;
+}
+
+.bouzgle-links-row a {
+    color: #0000cc;
+    text-decoration: underline;
+    margin: 0 4px;
+    cursor: pointer;
+}
+
+.bouzgle-results {
+    text-align: left;
+    margin-top: 15px;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.bouzgle-res-item {
+    margin-bottom: 12px;
+}
+
+.bouzgle-res-title {
+    font-size: 12px;
+    color: #0000cc;
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.bouzgle-res-url {
+    font-size: 10px;
+    color: #008000;
+}
+
+.bouzgle-res-desc {
+    font-size: 11px;
+    color: #333333;
+    line-height: 1.3;
+}
+
+/* --- BouzeTube (YouTube Parody) --- */
+.web-bouzetube {
+    padding: 8px;
+    font-family: Arial, sans-serif;
+    color: #222;
+}
+
+.bt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #cc181e;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+}
+
+.bt-logo {
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.bt-logo-badge {
+    background-color: #cc181e;
+    color: #ffffff;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.bt-tagline {
+    font-size: 10px;
+    color: #666;
+}
+
+.bt-main-grid {
+    display: flex;
+    gap: 10px;
+}
+
+.bt-player-col {
+    flex: 1.4;
+}
+
+.bt-side-col {
+    flex: 1;
+    border-left: 1px solid #ddd;
+    padding-left: 8px;
+}
+
+.bt-screen {
+    background-color: #000000;
+    border: 2px solid #666;
+    height: 175px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    text-align: center;
+    overflow: hidden;
+}
+
+.bt-screen-anim {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.bt-play-btn {
+    font-size: 28px;
+    cursor: pointer;
+    background: rgba(204, 24, 30, 0.85);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bt-controls {
+    background-color: #c0c0c0;
+    border: 1px solid #808080;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px;
+    font-size: 10px;
+}
+
+.bt-track-bar {
+    flex: 1;
+    height: 8px;
+    background: #ffffff;
+    border: 1px inset #808080;
+    position: relative;
+}
+
+.bt-track-fill {
+    width: 32%;
+    height: 100%;
+    background: #000080;
+}
+
+.bt-title {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 6px 0 2px 0;
+}
+
+.bt-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.bt-stars {
+    color: #f5b000;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.bt-actions {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.bt-comments-box {
+    border-top: 1px solid #ccc;
+    padding-top: 6px;
+    margin-top: 6px;
+}
+
+.bt-comment-item {
+    background: #f7f7f7;
+    border: 1px solid #e2e2e2;
+    padding: 3px 6px;
+    margin-bottom: 3px;
+    border-radius: 2px;
+    font-size: 10px;
+}
+
+.bt-side-title {
+    font-size: 11px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 2px;
+    margin-bottom: 6px;
+}
+
+.bt-rec-item {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    padding: 3px;
+    border: 1px solid transparent;
+}
+
+.bt-rec-item:hover {
+    background-color: #f2f2f2;
+    border-color: #ccc;
+}
+
+.bt-rec-thumb {
+    width: 48px;
+    height: 36px;
+    background: #222;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.bt-rec-info {
+    font-size: 10px;
+}
+
+/* --- FaceBouze (Facebook / TheFacebook Parody) --- */
+.web-facebouze {
+    font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
+    color: #333;
+}
+
+.fb-header {
+    background-color: #3b5998;
+    color: #ffffff;
+    padding: 6px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.fb-logo {
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+}
+
+.fb-subtext {
+    font-size: 10px;
+    opacity: 0.9;
+}
+
+.fb-body {
+    display: flex;
+    gap: 10px;
+    padding: 8px;
+}
+
+.fb-sidebar {
+    width: 130px;
+    flex-shrink: 0;
+    border-right: 1px solid #d8dfea;
+    padding-right: 8px;
+}
+
+.fb-profile-avatar {
+    width: 100%;
+    height: 110px;
+    background-color: #e2e8f5;
+    border: 1px solid #3b5998;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    font-size: 32px;
+}
+
+.fb-profile-name {
+    font-weight: bold;
+    font-size: 12px;
+    color: #3b5998;
+}
+
+.fb-quick-info {
+    font-size: 10px;
+    color: #666;
+    margin-top: 4px;
+    line-height: 1.3;
+}
+
+.fb-wall-col {
+    flex: 1;
+}
+
+.fb-status-box {
+    background-color: #f7f7f7;
+    border: 1px solid #d8dfea;
+    padding: 6px;
+    margin-bottom: 8px;
+}
+
+.fb-input-area {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.fb-farm-game {
+    background: linear-gradient(180deg, #e5f6df 0%, #c9e8be 100%);
+    border: 1px solid #7eb86a;
+    padding: 6px;
+    margin-bottom: 8px;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 11px;
+}
+
+.fb-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fb-post-card {
+    border-top: 1px solid #e9e9e9;
+    padding-top: 6px;
+    font-size: 11px;
+}
+
+.fb-post-author {
+    font-weight: bold;
+    color: #3b5998;
+}
+
+.fb-post-meta {
+    font-size: 9px;
+    color: #999;
+}
+
+/* --- AmaBouze (Amazon 1997 Parody) --- */
+.web-amabouze {
+    padding: 8px;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.am-navbar {
+    background-color: #003366;
+    color: #ff9900;
+    padding: 6px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.am-logo {
+    font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
+    color: #ffffff;
+}
+
+.am-logo span {
+    color: #ff9900;
+}
+
+.am-cart-tag {
+    background-color: #ff9900;
+    color: #000000;
+    font-weight: bold;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 2px;
+}
+
+.am-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 11px;
+}
+
+.am-table th {
+    background-color: #e8eef7;
+    border: 1px solid #999999;
+    padding: 4px 6px;
+    text-align: left;
+}
+
+.am-table td {
+    border: 1px solid #cccccc;
+    padding: 6px;
+    vertical-align: middle;
+}
+
+.am-item-name {
+    font-weight: bold;
+    color: #000080;
+}
+
+.am-item-price {
+    font-weight: bold;
+    color: #990000;
+}
+
+/* --- PouicPouic (Twitter / X Parody) --- */
+.web-pouicpouic {
+    padding: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.pp-navbar {
+    background-color: #1da1f2;
+    color: #ffffff;
+    padding: 6px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 3px;
+    margin-bottom: 8px;
+}
+
+.pp-logo {
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pp-compose-box {
+    background-color: #f5f8fa;
+    border: 1px solid #e1e8ed;
+    padding: 6px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.pp-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.pp-card {
+    background-color: #ffffff;
+    border: 1px solid #e1e8ed;
+    padding: 6px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+}
+
+.pp-author {
+    font-weight: bold;
+    color: #14171a;
+}
+
+.pp-handle {
+    font-weight: normal;
+    color: #657786;
+    font-size: 10px;
+}
+
+.pp-actions-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+    font-size: 10px;
+    color: #657786;
+}
+
+.pp-act-btn {
+    cursor: pointer;
+    color: #1da1f2;
+}
+
+/* --- Bouzepedia (Wikipedia Parody) --- */
+.web-bouzepedia {
+    padding: 8px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.bp-donate-banner {
+    background-color: #fffde0;
+    border: 1px solid #e8a800;
+    padding: 6px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.bp-layout {
+    display: flex;
+    gap: 10px;
+}
+
+.bp-content {
+    flex: 1;
+}
+
+.bp-header-title {
+    font-size: 18px;
+    font-weight: normal;
+    border-bottom: 1px solid #aaaaaa;
+    margin-bottom: 6px;
+    padding-bottom: 2px;
+}
+
+.bp-infobox {
+    width: 150px;
+    background-color: #f9f9f9;
+    border: 1px solid #aaaaaa;
+    padding: 6px;
+    font-size: 10px;
+    flex-shrink: 0;
+    float: right;
+    margin: 0 0 8px 8px;
+}
+
+.bp-infobox-header {
+    background-color: #ccddff;
+    font-weight: bold;
+    text-align: center;
+    padding: 2px;
+    margin-bottom: 4px;
+}
+
+/* --- eBouze (eBay Parody) --- */
+.web-ebouze {
+    padding: 8px;
+    font-family: Verdana, sans-serif;
+}
+
+.eb-top {
+    border-bottom: 2px solid #002664;
+    padding-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.eb-logo {
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: -1px;
+}
+
+.eb-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.eb-item-card {
+    border: 1px solid #cccccc;
+    background-color: #fafafa;
+    padding: 6px;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.eb-item-title {
+    font-weight: bold;
+    color: #000080;
+    margin-bottom: 3px;
+}
+
+.eb-price {
+    font-size: 12px;
+    font-weight: bold;
+    color: #b00;
+    margin: 3px 0;
+}
+
+/* --- NetBouze (Netflix / VHS Club Parody) --- */
+.web-netbouze {
+    background-color: #141414;
+    color: #ffffff;
+    padding: 8px;
+    font-family: Arial, sans-serif;
+}
+
+.nb-header {
+    background-color: #e50914;
+    color: #ffffff;
+    padding: 6px 8px;
+    font-weight: bold;
+    font-size: 15px;
+    letter-spacing: 1px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nb-warning {
+    color: #ffaa00;
+    font-size: 10px;
+    margin: 6px 0;
+    text-align: center;
+    font-style: italic;
+}
+
+.nb-catalog {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.nb-movie-card {
+    background-color: #222222;
+    border: 1px solid #444444;
+    padding: 6px;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.nb-movie-title {
+    color: #e50914;
+    font-weight: bold;
+    font-size: 11px;
+    margin-bottom: 2px;
 }
 
 /* ==========================================================================
@@ -1577,10 +2427,24 @@ body.glitch-stage-apocalypse {
     font-size: 11px;
 }
 
-.rec-icon { margin-right: 8px; }
-.rec-name { flex: 1; font-weight: bold; }
-.rec-size { width: 70px; color: #666666; }
-.rec-date { width: 90px; color: #666666; }
+.rec-icon {
+    margin-right: 8px;
+}
+
+.rec-name {
+    flex: 1;
+    font-weight: bold;
+}
+
+.rec-size {
+    width: 70px;
+    color: #666666;
+}
+
+.rec-date {
+    width: 90px;
+    color: #666666;
+}
 
 .recycle-status {
     padding: 3px 6px;
@@ -1694,8 +2558,15 @@ body.glitch-stage-apocalypse {
 }
 
 @keyframes clippyFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
 .clippy-corrupted .clippy-character {
@@ -1884,8 +2755,15 @@ body.glitch-stage-apocalypse {
 }
 
 @keyframes popupEntrance {
-    0% { transform: scale(0.85); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
+    0% {
+        transform: scale(0.85);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }
 
 .popup-title-bar {
@@ -2057,10 +2935,12 @@ body.glitch-stage-apocalypse {
     background: linear-gradient(90deg, #cc0000, #ff6600) !important;
     color: #ffffff !important;
 }
+
 .theme-hot .popup-badge {
     background-color: #ff0000;
     color: #ffffff;
 }
+
 .theme-hot .popup-ad-body {
     background: linear-gradient(180deg, #fff5f5, #ffe6e6);
 }
@@ -2070,10 +2950,12 @@ body.glitch-stage-apocalypse {
     background: linear-gradient(90deg, #008800, #66cc00) !important;
     color: #ffffff !important;
 }
+
 .theme-growth .popup-badge {
     background-color: #00aa00;
     color: #ffffff;
 }
+
 .theme-growth .popup-ad-body {
     background: linear-gradient(180deg, #f0fff0, #e6ffe6);
 }
@@ -2083,10 +2965,12 @@ body.glitch-stage-apocalypse {
     background: linear-gradient(90deg, #cc0066, #ff66aa) !important;
     color: #ffffff !important;
 }
+
 .theme-pink .popup-badge {
     background-color: #ff3399;
     color: #ffffff;
 }
+
 .theme-pink .popup-ad-body {
     background: linear-gradient(180deg, #fff0f7, #ffe0f0);
 }
@@ -2096,10 +2980,12 @@ body.glitch-stage-apocalypse {
     background: linear-gradient(90deg, #b8860b, #ffd700) !important;
     color: #000000 !important;
 }
+
 .theme-gold .popup-badge {
     background-color: #d4af37;
     color: #000000;
 }
+
 .theme-gold .popup-ad-body {
     background: linear-gradient(180deg, #fffdf0, #fff8dc);
 }
@@ -2109,6 +2995,7 @@ body.glitch-stage-apocalypse {
     background: linear-gradient(90deg, #0055aa, #00aaff) !important;
     color: #ffffff !important;
 }
+
 .theme-cyan .popup-badge {
     background-color: #0099ff;
     color: #ffffff;
@@ -2119,6 +3006,7 @@ body.glitch-stage-apocalypse {
     background: linear-gradient(90deg, #cc9900, #ffea00) !important;
     color: #000000 !important;
 }
+
 .theme-banana .popup-badge {
     background-color: #ffee55;
     color: #000000;
@@ -2129,6 +3017,7 @@ body.glitch-stage-apocalypse {
     background: linear-gradient(90deg, #5500aa, #aa00ff) !important;
     color: #ffffff !important;
 }
+
 .theme-purple .popup-badge {
     background-color: #9933ff;
     color: #ffffff;
@@ -2140,15 +3029,18 @@ body.glitch-stage-apocalypse {
     color: #ffaa00 !important;
     font-family: var(--win-mono);
 }
+
 .theme-minitel .popup-badge {
     background-color: #ffaa00;
     color: #000000;
     font-family: var(--win-mono);
 }
+
 .theme-minitel .popup-ad-body {
     background: #111111;
     color: #ffaa00;
 }
+
 .theme-minitel .popup-message {
     color: #ffaa00;
     font-family: var(--win-mono);
@@ -2160,6 +3052,7 @@ body.glitch-stage-apocalypse {
     color: #000000 !important;
     font-weight: bold;
 }
+
 .theme-alert .popup-badge {
     background-color: #cc0000;
     color: #ffffff;
@@ -2171,14 +3064,17 @@ body.glitch-stage-apocalypse {
     color: #ffffff !important;
     animation: blinkAnim 0.8s infinite;
 }
+
 .theme-xxx .popup-badge {
     background-color: #000000;
     color: #ff0055;
     border: 1px solid #ff0055;
 }
+
 .theme-xxx .popup-ad-body {
     background: linear-gradient(180deg, #fff0f5, #ffe4e1);
 }
+
 .theme-xxx .popup-claim-btn {
     background: linear-gradient(180deg, #ff3366, #cc0033);
     color: #ffffff;
@@ -2191,13 +3087,16 @@ body.glitch-stage-apocalypse {
     background: linear-gradient(90deg, #660066, #ff00aa) !important;
     color: #ffffff !important;
 }
+
 .theme-strip .popup-badge {
     background-color: #ff00aa;
     color: #ffffff;
 }
+
 .theme-strip .popup-ad-body {
     background: linear-gradient(180deg, #faf0f8, #f5d6ee);
 }
+
 .theme-strip .popup-claim-btn {
     background: linear-gradient(180deg, #ff00aa, #880066);
     color: #ffffff;
@@ -2235,7 +3134,7 @@ body.glitch-stage-apocalypse {
 }
 
 /* ==========================================================================
-   Windows XP Login / Welcome Screen (Écran de Bienvenue Windows XP)
+   Bouzedows XP Login / Welcome Screen (Écran de Bienvenue Bouzedows XP)
    ========================================================================== */
 
 .xp-login-screen {
@@ -2594,8 +3493,15 @@ body.glitch-stage-apocalypse {
 }
 
 @keyframes xpPulse {
-    0%, 100% { opacity: 0.8; }
-    50% { opacity: 1; }
+
+    0%,
+    100% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 /* Keyboard Tip Box */
@@ -2648,28 +3554,489 @@ body.glitch-stage-apocalypse {
         padding: 10px;
         gap: 15px;
     }
+
     .xp-brand-section {
         align-items: center;
         padding-right: 0;
         text-align: center;
     }
+
     .xp-welcome-instruction {
         text-align: center;
     }
+
     .xp-center-divider {
         width: 80%;
         height: 2px;
         background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.85) 30%, rgba(255, 255, 255, 0.85) 70%, transparent);
     }
+
     .xp-user-section {
         align-items: center;
         padding-left: 0;
     }
+
     .xp-bottom-content {
         padding: 0 15px;
     }
+
     .xp-bottom-note {
         display: none;
     }
 }
 
+/* ==========================================================================
+   VIRUS EFFECTS & INTERFACE IMPACTS
+   ========================================================================== */
+
+/* --- 16 Internet Explorer Toolbars Stack --- */
+.browser-toolbars-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--win-gray);
+    border-bottom: 2px solid var(--win-black);
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.retro-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 4px;
+    border-bottom: 1px solid #808080;
+    border-top: 1px solid #ffffff;
+    font-size: 9px;
+    background-color: #d4d0c8;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.tb-brand {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding-right: 4px;
+    border-right: 1px solid #999;
+    flex-shrink: 0;
+}
+
+.tb-btn {
+    font-size: 8.5px;
+    padding: 1px 4px;
+    flex-shrink: 0;
+    cursor: pointer;
+    background: #e8e8e8;
+}
+
+.tb-btn:hover {
+    background: #ffffff;
+}
+
+.tb-input {
+    font-size: 8.5px;
+    padding: 1px 3px;
+    height: 16px;
+    width: 90px;
+    flex-shrink: 0;
+}
+
+/* Custom Toolbar Branding Accents */
+.tb-yahoo {
+    background-color: #f7e6f7;
+}
+
+.tb-yahoo .tb-brand {
+    color: #6001d2;
+}
+
+.tb-ask {
+    background-color: #fce8e6;
+}
+
+.tb-ask .tb-brand {
+    color: #c41200;
+}
+
+.tb-smiley {
+    background-color: #fff9d6;
+}
+
+.tb-smiley .tb-brand {
+    color: #cc8800;
+}
+
+.tb-kazaa {
+    background-color: #e0f4f4;
+}
+
+.tb-kazaa .tb-brand {
+    color: #008888;
+}
+
+.tb-dogpile {
+    background-color: #f4ecdf;
+}
+
+.tb-dogpile .tb-brand {
+    color: #884400;
+}
+
+.tb-weather {
+    background-color: #e6f0ff;
+}
+
+.tb-weather .tb-brand {
+    color: #0055cc;
+}
+
+.tb-hotbar {
+    background: linear-gradient(90deg, #ffe6f0, #e6ffff);
+}
+
+.tb-hotbar .tb-brand {
+    color: #ff0088;
+}
+
+.tb-gator {
+    background-color: #e6f7e6;
+}
+
+.tb-gator .tb-brand {
+    color: #008822;
+}
+
+.tb-casino {
+    background: linear-gradient(90deg, #fff2cc, #ffd9cc);
+}
+
+.tb-casino .tb-brand {
+    color: #b8860b;
+}
+
+.tb-real {
+    background-color: #e8eaf6;
+}
+
+.tb-real .tb-brand {
+    color: #1a237e;
+}
+
+.tb-altavista {
+    background-color: #ffebee;
+}
+
+.tb-altavista .tb-brand {
+    color: #b71c1c;
+}
+
+.tb-registry {
+    background-color: #ffcdd2;
+    animation: blinkAnim 1.2s infinite;
+}
+
+.tb-registry .tb-brand {
+    color: #b71c1c;
+    font-weight: 900;
+}
+
+.tb-mapquest {
+    background-color: #e0f2f1;
+}
+
+.tb-mapquest .tb-brand {
+    color: #004d40;
+}
+
+.tb-shockwave {
+    background-color: #fbe9e7;
+}
+
+.tb-shockwave .tb-brand {
+    color: #bf360c;
+}
+
+.tb-clippy {
+    background-color: #fffde7;
+}
+
+.tb-clippy .tb-brand {
+    color: #f57f17;
+}
+
+.tb-chaos {
+    background: linear-gradient(90deg, #ffcdd2, #e1bee7);
+}
+
+.tb-chaos .tb-brand {
+    color: #880e4f;
+}
+
+/* --- BonziBuddy Character Widget --- */
+.bonzi-widget {
+    position: fixed;
+    bottom: 45px;
+    right: 25px;
+    width: 90px;
+    height: 110px;
+    z-index: 8999;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.2s ease;
+}
+
+.bonzi-widget:active {
+    cursor: grabbing;
+}
+
+.bonzi-sprite {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.45));
+    animation: bonziBounce 2.5s infinite ease-in-out;
+}
+
+@keyframes bonziBounce {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    30% {
+        transform: translateY(-8px) rotate(-3deg);
+    }
+
+    70% {
+        transform: translateY(-3px) rotate(3deg);
+    }
+}
+
+.bonzi-bubble {
+    position: absolute;
+    bottom: 115px;
+    right: -10px;
+    width: 220px;
+    background-color: #ffffdd;
+    color: #000000;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: var(--win-font);
+    font-size: 11px;
+    box-shadow: 2px 3px 0px rgba(0, 0, 0, 0.4);
+    z-index: 9000;
+}
+
+.bonzi-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 35px;
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: #ffffdd transparent;
+    display: block;
+    width: 0;
+}
+
+.bonzi-bubble-btns {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+    justify-content: flex-end;
+}
+
+.bonzi-bubble-btns button {
+    font-size: 9px;
+    padding: 2px 5px;
+}
+
+/* --- Pentium II Overheat & Fan Heat Shimmer --- */
+.pentium-fan-smoke {
+    position: fixed;
+    bottom: 28px;
+    right: 50px;
+    pointer-events: none;
+    z-index: 8500;
+    font-size: 20px;
+    animation: smokeRise 1.8s infinite linear;
+    opacity: 0.8;
+}
+
+@keyframes smokeRise {
+    0% {
+        transform: translateY(0) scale(0.6) rotate(0deg);
+        opacity: 0.9;
+    }
+
+    50% {
+        transform: translateY(-35px) scale(1.1) rotate(15deg);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: translateY(-70px) scale(1.6) rotate(30deg);
+        opacity: 0;
+    }
+}
+
+.pentium-heat-haze {
+    position: fixed;
+    bottom: 28px;
+    left: 0;
+    width: 100vw;
+    height: 60px;
+    pointer-events: none;
+    z-index: 8400;
+    background: linear-gradient(0deg, rgba(255, 60, 0, 0.18) 0%, transparent 100%);
+    animation: heatPulse 1.2s infinite alternate ease-in-out;
+}
+
+@keyframes heatPulse {
+    0% {
+        opacity: 0.3;
+        filter: blur(0px);
+    }
+
+    100% {
+        opacity: 0.85;
+        filter: blur(1.5px);
+    }
+}
+
+/* --- External 56k Modem Widget --- */
+.modem-box-widget {
+    position: fixed;
+    bottom: 34px;
+    right: 140px;
+    background-color: #e4ddcf;
+    border-top: 2px solid #ffffff;
+    border-left: 2px solid #ffffff;
+    border-right: 2px solid #000000;
+    border-bottom: 2px solid #000000;
+    padding: 3px 6px;
+    font-family: var(--win-font);
+    font-size: 9px;
+    z-index: 8200;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.modem-leds-row {
+    display: flex;
+    gap: 3px;
+}
+
+.modem-led {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #330000;
+    border: 1px solid #111;
+}
+
+.modem-led.on-green {
+    background-color: #00ff00;
+    box-shadow: 0 0 4px #00ff00;
+}
+
+.modem-led.on-red {
+    background-color: #ff0000;
+    box-shadow: 0 0 4px #ff0000;
+}
+
+/* --- Sub7 CD-ROM Tray Pop-out Notification --- */
+.sub7-cd-tray {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background-color: #c0c0c0;
+    border: 2px outset #ffffff;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.5);
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    color: #880000;
+    z-index: 9500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: slideInRight 0.4s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(120%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* --- Blaster 60s Countdown Dialog Window --- */
+.blaster-dialog {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    background-color: #c0c0c0;
+    border: 2px outset #ffffff;
+    box-shadow: 3px 4px 12px rgba(0, 0, 0, 0.6);
+    z-index: 99999;
+    font-family: var(--win-font);
+}
+
+.blaster-title-bar {
+    background: linear-gradient(90deg, #800000, #ff0000);
+    color: #ffffff;
+    padding: 3px 6px;
+    font-weight: bold;
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.blaster-body {
+    padding: 12px;
+    font-size: 11px;
+}
+
+.blaster-timer-big {
+    font-size: 24px;
+    font-weight: bold;
+    color: #cc0000;
+    text-align: center;
+    margin: 8px 0;
+    letter-spacing: 2px;
+    font-family: monospace;
+}
+
+/* --- ILOVEYOU Floating Love Envelopes --- */
+.iloveyou-envelope {
+    position: fixed;
+    font-size: 24px;
+    z-index: 7500;
+    cursor: pointer;
+    animation: floatEnvelope 4s infinite ease-in-out;
+}
+
+@keyframes floatEnvelope {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-15px) rotate(8deg);
+    }
+}

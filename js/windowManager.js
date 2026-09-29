@@ -1,5 +1,5 @@
 /**
- * Bouzedows 95 Window Manager
+ * Bouzedows Window Manager
  * Handles dragging, z-index, minimize/maximize/close, taskbar buttons,
  * error dialogue generator, and retro window-trail bugs!
  */
@@ -223,7 +223,7 @@ class WindowManager {
         });
     }
 
-    // Bouzedows 95 GDI Solitaire / Error Dragging Trail Bug!
+    // Bouzedows GDI Solitaire / Error Dragging Trail Bug!
     drawWindowTrail(el) {
         if (!this.trailCtx) return;
         const rect = el.getBoundingClientRect();

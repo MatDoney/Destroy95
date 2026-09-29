@@ -1,5 +1,5 @@
 /**
- * Windows XP Welcome Screen (Écran de Bienvenue / Login)
+ * Bouzedows XP Welcome Screen (Écran de Bienvenue / Login)
  * Authentic XP logon interface with Hollywood-hacker style auto-typing:
  * Typing any key automatically fills "Henry PC" and password bullets "••••••••••••".
  */
@@ -216,7 +216,7 @@ class XpLoginScreen {
             this.statusRow.classList.remove('hidden');
         }
 
-        // Play Windows XP Logon Chime via Web Audio API
+        // Play Bouzedows XP Logon Chime via Web Audio API
         if (window.retroAudio) {
             window.retroAudio.ensureContext();
             if (window.retroAudio.playXpLogon) {

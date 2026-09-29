@@ -1,5 +1,5 @@
 /**
- * Windows 95 Bloc-notes (Notepad)
+ * Bouzedows Bloc-notes (Notepad)
  * Vintage text editor with classic MS-DOS config files, easter eggs, and secret passwords.
  */
 
@@ -9,14 +9,14 @@ class NotepadApp {
         this.files = {
             'AUTOEXEC.BAT': `@ECHO OFF
 PROMPT $p$g
-PATH C:\\WINDOWS;C:\\WINDOWS\\COMMAND;C:\\DOS
+PATH C:\\BOUZEDOWS;C:\\BOUZEDOWS\\COMMAND;C:\\DOS
 LH C:\\DRIVERS\\MOUSE.COM
 SET BLASTER=A220 I5 D1 H5 P330 T6
 SET SOUND=C:\\SB16
 REM --- DEMARRAGE SYSTEME TERMINE ---`,
 
-            'CONFIG.SYS': `DEVICE=C:\\WINDOWS\\HIMEM.SYS /TESTMEM:OFF
-DEVICE=C:\\WINDOWS\\EMM386.EXE NOEMS
+            'CONFIG.SYS': `DEVICE=C:\\BOUZEDOWS\\HIMEM.SYS /TESTMEM:OFF
+DEVICE=C:\\BOUZEDOWS\\EMM386.EXE NOEMS
 DOS=HIGH,UMB
 FILES=40
 BUFFERS=30
@@ -37,7 +37,7 @@ Quand j'ai double-cliqué sur SETUP.EXE :
 - Mon lecteur CD s'est ouvert tout seul.
 - Le ventilateur s'est mis à hurler.
 - Un gorille violet est apparu en chantant la Macarena.
-- Quelque chose a effacé C:\\WINDOWS\\SYSTEM...
+- Quelque chose a effacé C:\\BOUZEDOWS\\SYSTEM...
 AIDEZ-MOI.`
         };
 
@@ -132,11 +132,10 @@ AIDEZ-MOI.`
                 this.updateStats();
 
                 if (window.gameEngine) {
-                    const reward = 200;
-                    window.gameEngine.bytes += reward;
-                    window.gameEngine.totalBytes += reward;
-                    window.gameEngine.updateDamage();
-                    window.gameEngine.spawnFloatText(`+${reward} Octets (Texte Corrompu)`, window.innerWidth / 2, window.innerHeight / 2);
+                    window.gameEngine.addReward(200, 'Texte Corrompu', {
+                        clientX: window.innerWidth / 2,
+                        clientY: window.innerHeight / 2
+                    });
                 }
             };
         }

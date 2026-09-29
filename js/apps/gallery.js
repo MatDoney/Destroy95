@@ -1,5 +1,5 @@
 /**
- * Windows 95 Sample Pictures Gallery (Galerie d'images système)
+ * Bouzedows Sample Pictures Gallery (Galerie d'images système)
  * Faithful vintage bitmaps with 256-color dithering & wallpaper changer.
  */
 
@@ -10,8 +10,8 @@ class GalleryApp {
         this.images = [
             {
                 name: 'NUAGES.BMP',
-                title: 'Nuages dorés (Ciel de Windows)',
-                desc: 'Le fond d\'écran officiel et mythique de Windows 95.',
+                title: 'Nuages dorés (Ciel de Bouzedows)',
+                desc: 'Le fond d\'écran officiel et mythique de Bouzedows.',
                 res: '640 x 480',
                 colors: '256 Couleurs',
                 size: '307 Ko',
@@ -47,7 +47,7 @@ class GalleryApp {
             {
                 name: 'AUTO_SPORT.BMP',
                 title: 'Bolide V8 Jaune 1995',
-                desc: 'Image d\'exemple du dossier C:\\WINDOWS\\SYSTEM.',
+                desc: 'Image d\'exemple du dossier C:\\BOUZEDOWS\\SYSTEM.',
                 res: '640 x 480',
                 colors: '256 Couleurs',
                 size: '315 Ko',
@@ -81,14 +81,14 @@ class GalleryApp {
                     <div class="gal-info-item"><strong>Fichier :</strong> <span id="gal-filename">NUAGES.BMP</span></div>
                     <div class="gal-info-item"><strong>Taille :</strong> <span id="gal-size">307 Ko</span></div>
                     <div class="gal-info-item"><strong>Palette :</strong> <span id="gal-colors">256 Couleurs</span></div>
-                    <div class="gal-info-item"><strong>Description :</strong> <span id="gal-desc">Ciel de Windows</span></div>
+                    <div class="gal-info-item"><strong>Description :</strong> <span id="gal-desc">Ciel de Bouzedows</span></div>
                 </div>
             </div>
         `;
 
         window.windowManager.createWindow({
             id: this.winId,
-            title: 'Visionneuse d\'images Windows 95',
+            title: 'Visionneuse d\'images Bouzedows',
             icon: 'gallery',
             width: 440,
             height: 410,
@@ -161,7 +161,7 @@ class GalleryApp {
         desktop.style.backgroundPosition = 'center';
 
         if (window.gameEngine) {
-            window.gameEngine.showNotification('Papier peint actualisé', `${this.images[this.currentIndex].name} est désormais le fond d'écran de Windows !`);
+            window.gameEngine.showNotification('Papier peint actualisé', `${this.images[this.currentIndex].name} est désormais le fond d'écran de Bouzedows !`);
         }
     }
 
@@ -185,11 +185,10 @@ class GalleryApp {
 
         // Clicker reward for corrupting pictures
         if (window.gameEngine) {
-            const reward = 300;
-            window.gameEngine.bytes += reward;
-            window.gameEngine.totalBytes += reward;
-            window.gameEngine.updateDamage();
-            window.gameEngine.spawnFloatText(`+${reward} Octets (Corrompu)`, window.innerWidth / 2, window.innerHeight / 2);
+            window.gameEngine.addReward(300, 'Image Corrompue', {
+                clientX: window.innerWidth / 2,
+                clientY: window.innerHeight / 2
+            });
         }
     }
 

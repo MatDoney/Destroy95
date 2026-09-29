@@ -1,5 +1,5 @@
 /**
- * Windows 95 / Me 3D Pinball: Space Cadet (Retro Canvas Mini-Arcade)
+ * Bouzedows / Me 3D Pinball: Space Cadet (Retro Canvas Mini-Arcade)
  * Playable pinball with flippers, bumpers, score counters, spring launch, and audio effects.
  */
 
@@ -71,7 +71,7 @@ class PinballApp {
 
         window.windowManager.createWindow({
             id: this.winId,
-            title: '3D Pinball pour Windows - Space Cadet',
+            title: '3D Pinball pour Bouzedows - Space Cadet',
             icon: 'pinball',
             width: 324,
             height: 565,
@@ -327,12 +327,10 @@ class PinballApp {
         this.score += pts;
         this.updateUi();
 
-        // Pinball also grants corrupted bytes to the main game!
-        if (window.gameEngine) {
-            const bytesAdded = Math.floor(pts / 5);
-            window.gameEngine.bytes += bytesAdded;
-            window.gameEngine.totalBytes += bytesAdded;
-            window.gameEngine.updateDamage();
+        // Pinball also grants corrupted bytes to the main game with level scaling!
+        if (window.gameEngine && pts > 0) {
+            const baseAdded = Math.max(1, Math.floor(pts / 5));
+            window.gameEngine.addReward(baseAdded, 'Flipper');
         }
     }
 

@@ -1,5 +1,5 @@
 /**
- * Windows 95 / 98 Disk Defragmenter (Défragmenteur de disque)
+ * Bouzedows / 98 Disk Defragmenter (Défragmenteur de disque)
  * Watch clusters organize... while computer viruses infect and corrupt the sectors!
  */
 
@@ -190,11 +190,10 @@ class DefragApp {
 
         // Clicker reward
         if (window.gameEngine) {
-            const reward = 150;
-            window.gameEngine.bytes += reward;
-            window.gameEngine.totalBytes += reward;
-            window.gameEngine.updateDamage();
-            window.gameEngine.spawnFloatText(`+${reward} Octets (Secteur défectueux)`, window.innerWidth / 2, window.innerHeight / 2);
+            window.gameEngine.addReward(150, 'Secteur Défectueux', {
+                clientX: window.innerWidth / 2,
+                clientY: window.innerHeight / 2
+            });
         }
     }
 

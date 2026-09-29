@@ -1,5 +1,5 @@
 /**
- * Windows 95 / 2000 Popup Storm & Parody Ads Manager
+ * Bouzedows / 2000 Popup Storm & Parody Ads Manager
  * Generates authentic late 90s / early 2000s spam and pop-up ads with retro visual banners & parody images:
  * Singles in your area, lotteries, virility boosters, miracle diets, psychics, casinos, Nigerian prince, etc.
  * (Zero computer or tech references in the ad texts - 100% SFW Parodies!)
@@ -959,6 +959,8 @@ class PopupManager {
         el.style.width = '350px';
         el.style.zIndex = ++window.windowManager.highestZ;
 
+        const scaledReward = window.gameEngine ? window.gameEngine.scaleReward(ad.reward) : ad.reward;
+
         el.innerHTML = `
             <div class="window-title-bar popup-title-bar">
                 <div class="window-title-left">
@@ -990,7 +992,7 @@ class PopupManager {
                 <div class="popup-action-row">
                     <button class="win-btn popup-claim-btn" data-ad-claim="true">
                         ${ad.btnText}<br>
-                        <span class="popup-reward-badge">+${window.gameEngine.formatNumber(ad.reward)} Octets bonus !</span>
+                        <span class="popup-reward-badge">+${window.gameEngine ? window.gameEngine.formatNumber(scaledReward) : ad.reward} Octets bonus !</span>
                     </button>
                 </div>
                 <div class="popup-sub-links">
@@ -1017,13 +1019,14 @@ class PopupManager {
                 }
             }
 
-            // Reward
-            window.gameEngine.bytes += ad.reward;
-            window.gameEngine.totalBytes += ad.reward;
-            window.gameEngine.updateDamage();
-
+            // Reward scaled with player level
             const rect = el.getBoundingClientRect();
-            window.gameEngine.spawnFloatText(`+${window.gameEngine.formatNumber(ad.reward)} Octets ! 🎁`, rect.left + 70, rect.top + 10);
+            if (window.gameEngine) {
+                window.gameEngine.addReward(ad.reward, 'Pub bonus', {
+                    clientX: rect.left + 70,
+                    clientY: rect.top + 10
+                });
+            }
 
             this.closePopup(id);
         };

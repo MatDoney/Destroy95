@@ -1,5 +1,5 @@
 /**
- * Windows 95 Destruction Simulator - Clicker Engine
+ * Bouzedows Destruction Simulator - Clicker Engine
  */
 
 class ClickerEngine {
@@ -130,7 +130,7 @@ class ClickerEngine {
             },
             {
                 id: 'del_system32',
-                name: 'Supprimer C:\\WINDOWS\\SYSTEM32',
+                name: 'Supprimer C:\\BOUZEDOWS\\SYSTEM32',
                 desc: '"Voulez-vous vraiment supprimer les 1 842 fichiers vitaux du système ?" -> OUI',
                 baseCost: 900000000,
                 cost: 900000000,
@@ -191,7 +191,7 @@ class ClickerEngine {
             {
                 id: 'clippy_bribe',
                 name: 'Corrompre Clippy',
-                desc: 'Le trombone vous donne les clés d\'accès du registre Windows.',
+                desc: 'Le trombone vous donne les clés d\'accès du registre Bouzedows.',
                 cost: 120000,
                 power: 750,
                 count: 0,
@@ -217,7 +217,7 @@ class ClickerEngine {
             { id: 'millionaire', name: 'Mégaoctet Corrompu', desc: 'Accumuler 1 000 000 d\'octets corrompus.', unlocked: false },
             { id: 'dmg_75', name: 'Écran Agonisant', desc: 'Atteindre 75% de dégâts système.', unlocked: false },
             { id: 'first_bsod', name: 'L\'Écran Bleu de la Mort', desc: 'Provoquer le crash fatal (BSOD 100%).', unlocked: false },
-            { id: 'reboot_os', name: 'Format C: /U', desc: 'Réinstaller Windows et obtenir un bonus permanent.', unlocked: false }
+            { id: 'reboot_os', name: 'Format C: /U', desc: 'Réinstaller Bouzedows et obtenir un bonus permanent.', unlocked: false }
         ];
 
         this.loadSave();
@@ -274,6 +274,55 @@ class ClickerEngine {
 
     recalcTotals() {
         this.cps = this.getEffectiveCps();
+    }
+
+    // Dynamic Reward Scaling with Player Level & Progression
+    // Scales exponentially with CPS, Click Power, Total Corrupted Bytes, System Damage, and Prestige
+    scaleReward(baseReward, options = {}) {
+        const minReward = Math.max(1, Math.floor(baseReward || 1));
+        const cps = this.cps || 0;
+        const clickPower = this.getEffectiveClickPower();
+        const damage = Math.max(0, this.systemDamage || 0);
+        const prestige = this.prestigeCount || 0;
+        const total = this.totalBytes || 0;
+
+        // Relative weight of this reward compared to base mini-action (100 octets)
+        const weight = Math.max(0.1, minReward / 100);
+
+        // Production scaling:
+        // A mini-reward gives ~1.5s of CPS + ~4 clicks
+        // A popup / major event gives ~30s of CPS + ~80 clicks
+        const secEquivalent = weight * 1.5;
+        const clicksEquivalent = weight * 4;
+
+        const cpsBonus = Math.floor(cps * secEquivalent);
+        const clickBonus = Math.floor(clickPower * clicksEquivalent);
+        const veteranBonus = Math.floor(Math.sqrt(total) * weight * 0.4);
+
+        // Progression multiplier based on system damage and reboots
+        const progressMultiplier = (1 + (damage / 100)) * (1 + (prestige * 0.35));
+
+        const scaled = Math.floor((minReward + cpsBonus + clickBonus + veteranBonus) * progressMultiplier);
+        return Math.max(minReward, scaled);
+    }
+
+    // Award bytes with automatic player-level scaling, damage update, and optional float text
+    addReward(baseReward, reason = '', options = {}) {
+        const finalAmount = this.scaleReward(baseReward, options);
+        this.bytes += finalAmount;
+        this.totalBytes += finalAmount;
+        this.updateDamage();
+
+        if (options.clientX !== undefined && options.clientY !== undefined) {
+            const label = reason ? `+${this.formatNumber(finalAmount)} (${reason})` : `+${this.formatNumber(finalAmount)}`;
+            this.spawnFloatText(label, options.clientX, options.clientY);
+        } else if (options.targetEl) {
+            const rect = options.targetEl.getBoundingClientRect();
+            const label = reason ? `+${this.formatNumber(finalAmount)} (${reason})` : `+${this.formatNumber(finalAmount)}`;
+            this.spawnFloatText(label, rect.left + rect.width / 2, rect.top);
+        }
+
+        return finalAmount;
     }
 
     updateDamage() {
@@ -355,6 +404,10 @@ class ClickerEngine {
             if (up.id === 'bonzi') this.unlockAchievement('bonzi_unlocked');
 
             this.updateDamage();
+
+            if (window.virusEffects) {
+                window.virusEffects.onUpgradePurchased(up.id, up.count);
+            }
             return true;
         } else {
             window.retroAudio.playError();
@@ -422,6 +475,10 @@ class ClickerEngine {
 
         if (window.glitchController) {
             window.glitchController.hideBsod();
+        }
+
+        if (window.virusEffects) {
+            window.virusEffects.resetAll();
         }
 
         return true;
@@ -543,6 +600,10 @@ class ClickerEngine {
                     const a = this.achievements.find(x => x.id === saved.id);
                     if (a) a.unlocked = saved.unlocked;
                 });
+            }
+
+            if (window.virusEffects) {
+                window.virusEffects.syncAll(this.upgrades);
             }
         } catch (e) {
             console.warn("Error loading save", e);

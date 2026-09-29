@@ -1,5 +1,5 @@
 /**
- * Main Application Orchestrator for Bouzedows 95 Destruction Simulator
+ * Main Application Orchestrator for Bouzedows Destruction Simulator
  * Handles desktop icons, start menu, tray controls, audio toggles, and game loop.
  */
 
@@ -19,6 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Initialize Clippy
     window.clippyCompanion.init();
+
+    // 5.5 Initialize Virus UI Effects Controller (16 Toolbars, BonziBuddy, Overheat Fan, etc.)
+    if (window.virusEffects) {
+        window.virusEffects.init();
+    }
 
     // 6. Audio First Gesture Listener
     const onFirstInteraction = () => {
@@ -294,11 +299,8 @@ function openRecycleBinWindow() {
             win.el.querySelector('#rb-list').innerHTML = '<div class="empty-bin-msg">La Corbeille est vide.</div>';
             win.el.querySelector('#rb-status').textContent = '0 fichier(s)';
             if (window.gameEngine) {
-                const bonus = 500;
-                window.gameEngine.bytes += bonus;
-                window.gameEngine.totalBytes += bonus;
-                window.gameEngine.updateDamage();
-                window.gameEngine.showNotification('🗑️ Corbeille vidée', `Vous avez récupéré ${bonus} octets d'espace corrompu !`);
+                const bonus = window.gameEngine.addReward(500, 'Corbeille');
+                window.gameEngine.showNotification('🗑️ Corbeille vidée', `Vous avez récupéré ${window.gameEngine.formatNumber(bonus)} octets d'espace corrompu !`);
             }
         };
     }
@@ -359,7 +361,7 @@ function setupStartMenu() {
         if (window.xpLoginScreen) window.xpLoginScreen.lock();
     });
     bindMenu('#sm-item-restart', () => {
-        if (confirm("Voulez-vous redémarrer le système d'exploitation Bouzedows 95 ?")) {
+        if (confirm("Voulez-vous redémarrer le système d'exploitation Bouzedows ?")) {
             window.location.reload();
         }
     });

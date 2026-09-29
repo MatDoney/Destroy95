@@ -1,5 +1,5 @@
 /**
- * Retro Windows 95/98 Sound Synthesizer via Web Audio API
+ * Retro Bouzedows/98 Sound Synthesizer via Web Audio API
  * 100% pure client-side synthesis - no external audio files required!
  */
 class RetroAudioEngine {
@@ -9,6 +9,14 @@ class RetroAudioEngine {
         this.masterVolume = 0.5;
         this.masterGain = null;
         this.initialized = false;
+
+        // Fan Noise Synthesizer (Pentium sans ventilateur)
+        this.fanNoiseNode = null;
+        this.fanOscNode = null;
+        this.fanGainNode = null;
+        this.fanFilterNode = null;
+        this.isFanRunning = false;
+        this.fanBaseVolume = 0.15;
     }
 
     init() {
@@ -40,6 +48,9 @@ class RetroAudioEngine {
         if (this.masterGain && this.ctx) {
             this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : this.masterVolume, this.ctx.currentTime);
         }
+        if (this.fanGainNode && this.ctx) {
+            this.fanGainNode.gain.setValueAtTime(this.isMuted ? 0 : this.fanBaseVolume, this.ctx.currentTime);
+        }
         return this.isMuted;
     }
 
@@ -50,7 +61,7 @@ class RetroAudioEngine {
         }
     }
 
-    // Windows 95 Startup Chime (ambient chord arpeggio)
+    // Bouzedows Startup Chime (ambient chord arpeggio)
     playStartup() {
         this.ensureContext();
         if (!this.ctx || this.isMuted) return;
@@ -111,7 +122,7 @@ class RetroAudioEngine {
         });
     }
 
-    // Windows XP Logon Sound (Famous Bill Brown / Tom Ockerse startup chime)
+    // Bouzedows XP Logon Sound (Famous Bill Brown / Tom Ockerse startup chime)
     playXpLogon() {
         this.ensureContext();
         if (!this.ctx || this.isMuted) return;
@@ -191,7 +202,7 @@ class RetroAudioEngine {
         });
     }
 
-    // Windows Error Sound ("Chord")
+    // Bouzedows Error Sound ("Chord")
     playError() {
         this.ensureContext();
         if (!this.ctx || this.isMuted) return;
@@ -222,7 +233,7 @@ class RetroAudioEngine {
         });
     }
 
-    // Windows Ding / Exclamation chime
+    // Bouzedows Ding / Exclamation chime
     playDing() {
         this.ensureContext();
         if (!this.ctx || this.isMuted) return;
@@ -727,6 +738,165 @@ class RetroAudioEngine {
 
         osc.start(now);
         osc.stop(now + 0.5);
+    }
+
+    // Continuous 12,000 RPM Fan Noise (Pentium sans ventilateur)
+    startFanNoise(intensity = 1) {
+        this.ensureContext();
+        if (!this.ctx) return;
+        if (this.isFanRunning) {
+            this.setFanSpeed(intensity);
+            return;
+        }
+
+        try {
+            // White noise buffer for wind/air turbulence
+            const bufferSize = Math.floor(this.ctx.sampleRate * 1.5);
+            const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+
+            this.fanNoiseNode = this.ctx.createBufferSource();
+            this.fanNoiseNode.buffer = buffer;
+            this.fanNoiseNode.loop = true;
+
+            // Bandpass filter to sculpt howling fan air rush
+            this.fanFilterNode = this.ctx.createBiquadFilter();
+            this.fanFilterNode.type = 'bandpass';
+            const fFreq = Math.min(3200, 1100 + (intensity * 140));
+            this.fanFilterNode.frequency.setValueAtTime(fFreq, this.ctx.currentTime);
+            this.fanFilterNode.Q.setValueAtTime(1.8, this.ctx.currentTime);
+
+            // High RPM Whine oscillator (fan motor & bearing screech)
+            this.fanOscNode = this.ctx.createOscillator();
+            this.fanOscNode.type = 'sawtooth';
+            const oscFreq = Math.min(880, 410 + (intensity * 40));
+            this.fanOscNode.frequency.setValueAtTime(oscFreq, this.ctx.currentTime);
+
+            const oscFilter = this.ctx.createBiquadFilter();
+            oscFilter.type = 'lowpass';
+            oscFilter.frequency.setValueAtTime(950, this.ctx.currentTime);
+
+            const oscGain = this.ctx.createGain();
+            oscGain.gain.setValueAtTime(0.05, this.ctx.currentTime);
+
+            this.fanGainNode = this.ctx.createGain();
+            this.fanGainNode.gain.setValueAtTime(this.isMuted ? 0 : this.fanBaseVolume, this.ctx.currentTime);
+
+            // Connect graph
+            this.fanNoiseNode.connect(this.fanFilterNode);
+            this.fanFilterNode.connect(this.fanGainNode);
+
+            this.fanOscNode.connect(oscFilter);
+            oscFilter.connect(oscGain);
+            oscGain.connect(this.fanGainNode);
+
+            this.fanGainNode.connect(this.masterGain);
+
+            this.fanNoiseNode.start();
+            this.fanOscNode.start();
+            this.isFanRunning = true;
+        } catch (e) {
+            console.warn("Could not start fan noise:", e);
+        }
+    }
+
+    setFanSpeed(intensity = 1) {
+        if (!this.ctx || !this.isFanRunning) return;
+        const now = this.ctx.currentTime;
+        if (this.fanFilterNode) {
+            const freq = Math.min(3400, 1100 + (intensity * 140));
+            this.fanFilterNode.frequency.setTargetAtTime(freq, now, 0.15);
+        }
+        if (this.fanOscNode) {
+            const oscFreq = Math.min(950, 410 + (intensity * 40));
+            this.fanOscNode.frequency.setTargetAtTime(oscFreq, now, 0.15);
+        }
+    }
+
+    stopFanNoise() {
+        if (!this.isFanRunning) return;
+        try {
+            if (this.fanNoiseNode) {
+                this.fanNoiseNode.stop();
+                this.fanNoiseNode.disconnect();
+            }
+            if (this.fanOscNode) {
+                this.fanOscNode.stop();
+                this.fanOscNode.disconnect();
+            }
+        } catch (e) { }
+        this.isFanRunning = false;
+        this.fanNoiseNode = null;
+        this.fanOscNode = null;
+    }
+
+    // Mechanical 3.5" Floppy Disk seek sound
+    playFloppyDrive() {
+        this.ensureContext();
+        if (!this.ctx || this.isMuted) return;
+        const now = this.ctx.currentTime;
+
+        for (let i = 0; i < 4; i++) {
+            const t = now + (i * 0.07);
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(140 + (i % 2 === 0 ? 80 : 0), t);
+
+            gain.gain.setValueAtTime(0.14, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.045);
+
+            osc.connect(gain);
+            gain.connect(this.masterGain);
+
+            osc.start(t);
+            osc.stop(t + 0.05);
+        }
+    }
+
+    // Mechanical CD-ROM tray eject & close
+    playCdEject() {
+        this.ensureContext();
+        if (!this.ctx || this.isMuted) return;
+        const now = this.ctx.currentTime;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.linearRampToValueAtTime(220, now + 0.4);
+
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+
+        osc.start(now);
+        osc.stop(now + 0.43);
+    }
+
+    playCdClose() {
+        this.ensureContext();
+        if (!this.ctx || this.isMuted) return;
+        const now = this.ctx.currentTime;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+        osc.connect(gain);
+        gain.connect(this.masterGain);
+
+        osc.start(now);
+        osc.stop(now + 0.13);
     }
 }
 

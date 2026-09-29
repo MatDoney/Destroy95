@@ -1,5 +1,5 @@
 /**
- * Windows 95 Destruction Simulator - Main Clicker & Virus Workshop Window
+ * Bouzedows Destruction Simulator - Main Clicker & Virus Workshop Window
  */
 
 class ChaosApp {
@@ -35,14 +35,14 @@ class ChaosApp {
                     <div class="damage-bar-track">
                         <div class="damage-bar-fill" id="chaos-damage-fill" style="width: 0%;"></div>
                     </div>
-                    <div class="damage-status-alert" id="chaos-status-alert">Statut : Système stable (Windows 95 OSR2)</div>
+                    <div class="damage-status-alert" id="chaos-status-alert">Statut : Système stable (Bouzedows OSR2)</div>
                 </div>
 
                 <div class="chaos-click-zone">
                     <button class="chaos-big-target-btn" id="chaos-main-click-btn">
                         <div class="target-icon">${RetroIcons.chaosEngine}</div>
                         <div class="target-text">
-                            <span class="target-title">DÉTRUIRE WINDOWS 95</span>
+                            <span class="target-title">DÉTRUIRE Bouzedows</span>
                             <span class="target-sub">[ CLIQUEZ POUR CORROMPRE LE SYSTÈME ]</span>
                         </div>
                     </button>
@@ -62,7 +62,7 @@ class ChaosApp {
 
         window.windowManager.createWindow({
             id: this.winId,
-            title: 'Générateur de Chaos - Destructeur de Windows 95',
+            title: 'Générateur de Chaos - Destructeur de Bouzedows',
             icon: 'chaosEngine',
             width: 530,
             height: 520,
@@ -119,9 +119,9 @@ class ChaosApp {
             container.innerHTML = `
                 <div class="shop-list">
                     ${window.gameEngine.upgrades.map(u => {
-                        const canAfford = window.gameEngine.bytes >= u.cost;
-                        const iconSvg = RetroIcons[u.icon] || RetroIcons.chaosEngine;
-                        return `
+                const canAfford = window.gameEngine.bytes >= u.cost;
+                const iconSvg = RetroIcons[u.icon] || RetroIcons.chaosEngine;
+                return `
                             <div class="shop-item ${canAfford ? 'affordable' : 'locked'}">
                                 <div class="shop-item-icon">${iconSvg}</div>
                                 <div class="shop-item-details">
@@ -139,7 +139,7 @@ class ChaosApp {
                                 </div>
                             </div>
                         `;
-                    }).join('')}
+            }).join('')}
                 </div>
             `;
 
@@ -158,8 +158,8 @@ class ChaosApp {
             container.innerHTML = `
                 <div class="shop-list">
                     ${window.gameEngine.clickUpgrades.map(u => {
-                        const canAfford = window.gameEngine.bytes >= u.cost;
-                        return `
+                const canAfford = window.gameEngine.bytes >= u.cost;
+                return `
                             <div class="shop-item ${u.purchased ? 'purchased' : (canAfford ? 'affordable' : 'locked')}">
                                 <div class="shop-item-icon">${RetroIcons.computer}</div>
                                 <div class="shop-item-details">
@@ -177,7 +177,7 @@ class ChaosApp {
                                 </div>
                             </div>
                         `;
-                    }).join('')}
+            }).join('')}
                 </div>
             `;
 
@@ -197,8 +197,8 @@ class ChaosApp {
 
             container.innerHTML = `
                 <div class="prestige-panel">
-                    <h3>⚡ FORMAT C: /U & RÉINSTALLATION WINDOWS</h3>
-                    <p>Lorsque le système atteint une corruption critique (95%+ ou Écran Bleu BSOD), vous pouvez formater l'intégralité du disque pour réinstaller une version plus résistante et destructrice de Windows.</p>
+                    <h3>⚡ FORMAT C: /U & RÉINSTALLATION BOUZEDOWS</h3>
+                    <p>Lorsque le système atteint une corruption critique (95%+ ou Écran Bleu BSOD), vous pouvez formater l'intégralité du disque pour réinstaller une version plus résistante et destructrice de Bouzedows.</p>
                     
                     <div class="prestige-stats-box">
                         <div>Réinstallations effectuées : <strong>${window.gameEngine.prestigeCount} fois</strong></div>
@@ -212,7 +212,7 @@ class ChaosApp {
                             <strong>+${bonusChips} Processeur(s) Surchauffé(s)</strong> (+${bonusChips * 25}% DPS permanent)
                         </div>
                         <button class="win-btn prestige-big-btn" id="btn-do-prestige" ${canReboot ? '' : 'disabled'}>
-                            💾 Formater le disque dur et Réinstaller Windows
+                            💾 Formater le disque dur et Réinstaller Bouzedows
                         </button>
                         <div class="prestige-req-hint">
                             ${canReboot ? '✅ Défaillance critique atteinte ! Formatage disponible.' : '⚠️ Nécessite au moins 95% de dégâts système ou un écran bleu BSOD.'}
@@ -284,7 +284,7 @@ class ChaosApp {
         if (alertEl) {
             const d = window.gameEngine.systemDamage;
             if (d < 20) {
-                alertEl.textContent = 'Statut : Système nominal (Windows 95 OSR2)';
+                alertEl.textContent = 'Statut : Système nominal (Bouzedows OSR2)';
             } else if (d < 50) {
                 alertEl.textContent = 'Alerte : Instabilité registre détectée. Fuites GDI.';
             } else if (d < 100) {
@@ -294,7 +294,7 @@ class ChaosApp {
             } else if (d < 800) {
                 alertEl.textContent = '☢️ FUSION THERMONUCLÉAIRE : Le boîtier en plastique coule sur la moquette !';
             } else if (d < 2500) {
-                alertEl.textContent = '⚡ DISTORSION SPATIO-TEMPORELLE : Windows 95 refuse de mourir !';
+                alertEl.textContent = '⚡ DISTORSION SPATIO-TEMPORELLE : Bouzedows refuse de mourir !';
             } else {
                 alertEl.textContent = '🌌 TROU NOIR NUMÉRIQUE : Le processeur a atteint la vitesse supraluminique.';
             }
