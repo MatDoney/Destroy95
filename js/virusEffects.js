@@ -439,6 +439,16 @@ class VirusEffectsController {
         if (txtEl) txtEl.textContent = text;
         this.bonziBubbleEl.classList.remove('hidden');
 
+        // Smart bubble placement: if Bonzi is dragged near bottom of screen, flip bubble above him
+        if (this.bonziEl) {
+            const rect = this.bonziEl.getBoundingClientRect();
+            if (rect.top > window.innerHeight - 250) {
+                this.bonziBubbleEl.classList.add('bubble-above');
+            } else {
+                this.bonziBubbleEl.classList.remove('bubble-above');
+            }
+        }
+
         if (this.bonziHideTimer) clearTimeout(this.bonziHideTimer);
         if (autoHideMs > 0) {
             this.bonziHideTimer = setTimeout(() => this.hideBonziBubble(), autoHideMs);

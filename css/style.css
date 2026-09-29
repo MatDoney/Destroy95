@@ -3777,7 +3777,7 @@ body.glitch-stage-apocalypse {
 /* --- BonziBuddy Character Widget --- */
 .bonzi-widget {
     position: fixed;
-    bottom: 45px;
+    top: 25px;
     right: 25px;
     width: 90px;
     height: 110px;
@@ -3816,7 +3816,7 @@ body.glitch-stage-apocalypse {
 
 .bonzi-bubble {
     position: absolute;
-    bottom: 115px;
+    top: 115px;
     right: -10px;
     width: 220px;
     background-color: #ffffdd;
@@ -3833,13 +3833,25 @@ body.glitch-stage-apocalypse {
 .bonzi-bubble::after {
     content: '';
     position: absolute;
-    bottom: -10px;
+    top: -10px;
     right: 35px;
-    border-width: 10px 10px 0;
+    border-width: 0 10px 10px;
     border-style: solid;
-    border-color: #ffffdd transparent;
+    border-color: transparent transparent #ffffdd transparent;
     display: block;
     width: 0;
+}
+
+.bonzi-bubble.bubble-above {
+    top: auto;
+    bottom: 115px;
+}
+
+.bonzi-bubble.bubble-above::after {
+    top: auto;
+    bottom: -10px;
+    border-width: 10px 10px 0;
+    border-color: #ffffdd transparent transparent transparent;
 }
 
 .bonzi-bubble-btns {
