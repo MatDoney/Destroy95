@@ -150,59 +150,170 @@ class ClickerEngine {
             }
         ];
 
-        // Click Enhancers
+        // Click Enhancers - Scaling up to endgame (with % of total CPS synergy)
         this.clickUpgrades = [
             {
                 id: 'ball_mouse',
                 name: 'Nettoyer la boule de souris',
-                desc: 'Retirer les moutons de poussière des rouleaux en plastique.',
+                desc: 'Retirer les moutons de poussière et la crasse collée sur les rouleaux en plastique.',
                 cost: 30,
                 power: 1,
+                percentCps: 0,
+                icon: 'computer',
                 count: 0,
                 purchased: false
             },
             {
                 id: 'ps2_speed',
                 name: 'Port PS/2 cadencé à 200Hz',
-                desc: 'Une latence de clic réduite pour une frappe de bureau nerveuse.',
+                desc: 'Overclocker le port PS/2 pour une réponse de clic ultra-nerveuse sous Bouzedows.',
                 cost: 250,
                 power: 5,
+                percentCps: 0,
+                icon: 'computer',
                 count: 0,
                 purchased: false
             },
             {
                 id: 'double_click',
                 name: 'Double-clic rageur',
-                desc: 'Cliquer 4 fois sur l\'icône en espérant que ça charge plus vite.',
+                desc: 'Cliquer 5 fois d\'affilée comme un forcené en pensant que l\'application va s\'ouvrir plus vite.',
                 cost: 2000,
-                power: 25,
+                power: 30,
+                percentCps: 0,
+                icon: 'warningBadge',
                 count: 0,
                 purchased: false
             },
             {
                 id: 'crt_whack',
-                name: 'Taper sur le côté de l\'écran',
-                desc: 'La méthode de réparation universelle des années 90.',
+                name: 'Taper sur le côté du moniteur CRT',
+                desc: 'La technique universelle des années 90 qui réaligne instantanément le faisceau d\'électrons.',
                 cost: 15000,
-                power: 120,
+                power: 150,
+                percentCps: 0,
+                icon: 'errorBadge',
                 count: 0,
                 purchased: false
             },
             {
                 id: 'clippy_bribe',
-                name: 'Corrompre Clippy',
-                desc: 'Le trombone vous donne les clés d\'accès du registre Bouzedows.',
+                name: 'Corrompre Clippy le trombone',
+                desc: 'Un pot-de-vin en agrafes pour débloquer les privilèges administrateur masqués.',
                 cost: 120000,
-                power: 750,
+                power: 800,
+                percentCps: 0,
+                icon: 'clippy',
                 count: 0,
                 purchased: false
             },
             {
                 id: 'quick_format',
                 name: 'Clic droit "Formatage rapide"',
-                desc: 'Chaque clic efface un secteur du disque dur.',
+                desc: 'Chaque clic de souris efface physiquement une table d\'allocation FAT32.',
                 cost: 950000,
                 power: 4500,
+                percentCps: 0,
+                icon: 'floppy',
+                count: 0,
+                purchased: false
+            },
+            {
+                id: 'macro_rec',
+                name: 'Macro logicielle AutoClick 95',
+                desc: 'Enregistreur de frappe bricolé en Turbo Pascal qui simule des milliers d\'impulsions.',
+                cost: 7500000,
+                power: 25000,
+                percentCps: 0.005, // +0.5% CPS
+                icon: 'notepad',
+                count: 0,
+                purchased: false
+            },
+            {
+                id: 'voodoo_click',
+                name: 'Accélérateur 3D 3dfx Glide Clic',
+                desc: 'Faire calculer la trajectoire du pointeur par une carte 3dfx Voodoo 2 12Mo voodoo.dll.',
+                cost: 60000000,
+                power: 150000,
+                percentCps: 0.010, // +1.0% CPS
+                icon: 'pinball',
+                count: 0,
+                purchased: false
+            },
+            {
+                id: 'directx_strike',
+                name: 'Injection DLL DirectX 6.0',
+                desc: 'Remplacer directx.dll par une boucle infinie de clics injectée directement en mémoire vive.',
+                cost: 480000000,
+                power: 900000,
+                percentCps: 0.015, // +1.5% CPS
+                icon: 'chaosEngine',
+                count: 0,
+                purchased: false
+            },
+            {
+                id: 'irq_conflict',
+                name: 'Court-circuit manuel IRQ 12',
+                desc: 'Forcer un conflit matériel entre la souris et la carte son Sound Blaster 16.',
+                cost: 3800000000,
+                power: 5500000,
+                percentCps: 0.020, // +2.0% CPS
+                icon: 'speaker',
+                count: 0,
+                purchased: false
+            },
+            {
+                id: 'kernel32_override',
+                name: 'Court-circuiter KERNEL32.DLL',
+                desc: 'Chaque clic écrase directement l\'espace noyau de Bouzedows sans passer par l\'OS.',
+                cost: 30000000000,
+                power: 35000000,
+                percentCps: 0.025, // +2.5% CPS
+                icon: 'warningBadge',
+                count: 0,
+                purchased: false
+            },
+            {
+                id: 'lan_spam',
+                name: 'Tempête Broadcast Token Ring 16Mbps',
+                desc: 'Envoyer un paquet broadcast Corrupt95 sur tout le sous-réseau Ethernet coaxial 10BASE2.',
+                cost: 250000000000,
+                power: 220000000,
+                percentCps: 0.030, // +3.0% CPS
+                icon: 'internetExplorer',
+                count: 0,
+                purchased: false
+            },
+            {
+                id: 'ring0_click',
+                name: 'Privilège Noyau Ring 0 Absolu',
+                desc: 'Contourner toute protection matérielle du microprocesseur x86 pour un impact dévastateur.',
+                cost: 2000000000000,
+                power: 1500000000,
+                percentCps: 0.040, // +4.0% CPS
+                icon: 'errorBadge',
+                count: 0,
+                purchased: false
+            },
+            {
+                id: 'defrag_shockwave',
+                name: 'Onde de choc Défragmenteur Brutal',
+                desc: 'Chaque pression déclenche une réorganisation violente des têtes de lecture sur les plateaux.',
+                cost: 16000000000000,
+                power: 10000000000,
+                percentCps: 0.045, // +4.5% CPS
+                icon: 'defrag',
+                count: 0,
+                purchased: false
+            },
+            {
+                id: 'singularity_click',
+                name: 'Clic Quantique à Singularité Bouzedows',
+                desc: 'L\'ultime clic d\'agonie numérique : fusionne instantanément chaque clic avec l\'ensemble des virus.',
+                cost: 120000000000000,
+                power: 80000000000,
+                percentCps: 0.050, // +5.0% CPS
+                icon: 'chaosEngine',
                 count: 0,
                 purchased: false
             }
@@ -259,8 +370,23 @@ class ClickerEngine {
 
     getEffectiveClickPower() {
         let p = this.clickPower;
+        const pctCps = this.getClickPercentCps();
+        if (pctCps > 0 && this.cps > 0) {
+            p += Math.floor(this.cps * pctCps);
+        }
         const prestigeBonus = 1 + (this.prestigeCount * 0.25);
-        return Math.floor(p * prestigeBonus);
+        return Math.max(1, Math.floor(p * prestigeBonus));
+    }
+
+    getClickPercentCps() {
+        if (!this.clickUpgrades) return 0;
+        let total = 0;
+        for (const u of this.clickUpgrades) {
+            if (u.purchased && u.percentCps) {
+                total += u.percentCps;
+            }
+        }
+        return total;
     }
 
     getEffectiveCps() {
@@ -274,6 +400,15 @@ class ClickerEngine {
 
     recalcTotals() {
         this.cps = this.getEffectiveCps();
+        let basePower = 1;
+        if (this.clickUpgrades) {
+            for (const u of this.clickUpgrades) {
+                if (u.purchased) {
+                    basePower += (u.power || 0);
+                }
+            }
+        }
+        this.clickPower = basePower;
     }
 
     // Dynamic Reward Scaling with Player Level & Progression
@@ -471,7 +606,9 @@ class ClickerEngine {
         if (this.bytes >= up.cost) {
             this.bytes -= up.cost;
             up.purchased = true;
-            this.clickPower += up.power;
+            this.recalcTotals();
+            this.updateDamage();
+            this.save();
 
             window.retroAudio.ensureContext();
             window.retroAudio.playAsterisk();
@@ -638,7 +775,6 @@ class ClickerEngine {
                     const u = this.clickUpgrades.find(x => x.id === saved.id);
                     if (u) {
                         u.purchased = saved.purchased;
-                        if (u.purchased) this.clickPower += u.power;
                     }
                 });
             }
@@ -649,6 +785,8 @@ class ClickerEngine {
                     if (a) a.unlocked = saved.unlocked;
                 });
             }
+
+            this.recalcTotals();
 
             if (window.virusEffects) {
                 window.virusEffects.syncAll(this.upgrades);

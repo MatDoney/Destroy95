@@ -197,20 +197,38 @@ class ChaosApp {
             });
 
         } else if (tabName === 'clickers') {
+            const totalPctCps = window.gameEngine.getClickPercentCps();
+            const pctCpsFormatted = (totalPctCps * 100).toFixed(1);
+            const effClick = window.gameEngine.getEffectiveClickPower();
+
             container.innerHTML = `
+                <div class="click-summary-banner">
+                    <div class="summary-line">
+                        <span class="summary-label">💥 Puissance de clic effective :</span>
+                        <strong id="click-banner-power">+${window.gameEngine.formatNumber(effClick)} /clic</strong>
+                    </div>
+                    <div class="summary-sub">
+                        Synergie Processeur : <strong>+${pctCpsFormatted}% du CPS</strong> ajouté à chaque clic
+                        ${window.gameEngine.prestigeCount > 0 ? ` • Bonus Réinstallation : <strong>+${window.gameEngine.prestigeCount * 25}%</strong>` : ''}
+                    </div>
+                </div>
                 <div class="shop-list">
                     ${window.gameEngine.clickUpgrades.map(u => {
                 const canAfford = window.gameEngine.bytes >= u.cost;
+                const iconSvg = RetroIcons[u.icon] || RetroIcons.computer;
                 return `
                             <div class="shop-item ${u.purchased ? 'purchased' : (canAfford ? 'affordable' : 'locked')}">
-                                <div class="shop-item-icon">${RetroIcons.computer}</div>
+                                <div class="shop-item-icon">${iconSvg}</div>
                                 <div class="shop-item-details">
                                     <div class="shop-item-header">
                                         <span class="shop-item-name">${u.name}</span>
                                         <span class="shop-item-count">${u.purchased ? '✓ ACQUIS' : 'DISPONIBLE'}</span>
                                     </div>
                                     <div class="shop-item-desc">${u.desc}</div>
-                                    <div class="shop-item-sub">Bonus de clic : +${window.gameEngine.formatNumber(u.power)} octet(s)</div>
+                                    <div class="shop-item-sub">
+                                        Bonus : +${window.gameEngine.formatNumber(u.power)} octet(s)
+                                        ${u.percentCps ? ` • <span class="click-synergy-tag">⚡ +${(u.percentCps * 100).toFixed(1)}% du CPS</span>` : ''}
+                                    </div>
                                 </div>
                                 <div class="shop-item-action">
                                     <button class="win-btn shop-click-btn" data-click-id="${u.id}" ${u.purchased ? 'disabled' : (canAfford ? '' : 'disabled')}>
@@ -377,6 +395,31 @@ class ChaosApp {
                 const costInfo = window.gameEngine.getUpgradeCostFor(upId, mult);
                 qb.disabled = !costInfo.canAfford;
             });
+        } else if (this.currentTab === 'clickers') {
+            const btns = document.querySelectorAll('.shop-click-btn');
+            btns.forEach(b => {
+                const u = window.gameEngine.clickUpgrades.find(x => x.id === b.dataset.clickId);
+                if (u) {
+                    const canAfford = window.gameEngine.bytes >= u.cost;
+                    b.disabled = u.purchased || !canAfford;
+
+                    const item = b.closest('.shop-item');
+                    if (item && !u.purchased) {
+                        if (canAfford) {
+                            item.classList.add('affordable');
+                            item.classList.remove('locked');
+                        } else {
+                            item.classList.remove('affordable');
+                            item.classList.add('locked');
+                        }
+                    }
+                }
+            });
+
+            const bannerPower = document.getElementById('click-banner-power');
+            if (bannerPower) {
+                bannerPower.textContent = `+${window.gameEngine.formatNumber(window.gameEngine.getEffectiveClickPower())} /clic`;
+            }
         }
     }
 }

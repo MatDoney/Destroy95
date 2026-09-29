@@ -82,8 +82,26 @@ Aucun serveur, aucun Node.js ni commande `npm install` n'est nécessaire.
   11. 🪟 *16 Toolbars Internet Explorer* : **Véritable empilement de barres d'outils envahissantes** dans le navigateur (Yahoo!, AskJeeves, SmileyCentral, Kazaa, Dogpile, WeatherBug, Hotbar, Gator, Casino...) qui réduisent l'espace de navigation.
   12. 🗑️ *Supprimer `C:\BOUZEDOWS\SYSTEM32`* : Panique du bouton Démarrer qui crie `« AU SECOURS ! »` en rouge vif et déstabilise les icônes.
   13. ⏳ *Bug de l'An 2000 (Y2K)* : L'horloge système remonte le temps jusqu'au `01/01/1900 00:00` avec glitch disco.
-* **Améliorations de Clic** :
-  * Nettoyer la boule de souris poussiéreuse, port PS/2 cadencé à 200 Hz, double-clic rageur, taper sur le flanc de l'écran cathodique, corrompre Clippy...
+* **💥 Améliorations de Clic à Haut Scaling (+ Synergie % CPS)** :
+  * **15 paliers d'améliorations de clic** couvrant de 30 octets jusqu'à **120 To** d'octets corrompus !
+  * **Synergie Dynamique % du CPS** : À partir des tiers intermédiaires, les améliorations ajoutent un pourcentage direct du CPS total de vos virus à **chaque clic** (jusqu'à **+24,0% du CPS par clic**) !
+  * Paliers inclus :
+    1. *Nettoyer la boule de souris* (+1 octet)
+    2. *Port PS/2 cadencé à 200Hz* (+5 octets)
+    3. *Double-clic rageur* (+30 octets)
+    4. *Taper sur le côté du moniteur CRT* (+150 octets)
+    5. *Corrompre Clippy le trombone* (+800 octets)
+    6. *Clic droit "Formatage rapide"* (+4 500 octets)
+    7. *Macro logicielle AutoClick 95* (+25 000 octets • **+0,5% du CPS**)
+    8. *Accélérateur 3D 3dfx Glide Clic* (+150 000 octets • **+1,0% du CPS**)
+    9. *Injection DLL DirectX 6.0* (+900 000 octets • **+1,5% du CPS**)
+    10. *Court-circuit manuel IRQ 12* (+5,5 Mo/clic • **+2,0% du CPS**)
+    11. *Court-circuiter KERNEL32.DLL* (+35 Mo/clic • **+2,5% du CPS**)
+    12. *Tempête Broadcast Token Ring 16Mbps* (+220 Mo/clic • **+3,0% du CPS**)
+    13. *Privilège Noyau Ring 0 Absolu* (+1,5 Go/clic • **+4,0% du CPS**)
+    14. *Onde de choc Défragmenteur Brutal* (+10 Go/clic • **+4,5% du CPS**)
+    15. *Clic Quantique à Singularité Bouzedows* (+80 Go/clic • **+5,0% du CPS**)
+  * **Bannière de statut en direct** dans l'onglet des clics avec la puissance totale effective, le pourcentage de synergie CPU et les multiplicateurs de réinstallation.
 * **🛒 Boutons d'Achat Multiple (x1, x5, x10, MAX)** :
   * Une barre de sélection globale dans la boutique du Générateur de Chaos permet d'acheter en masse : **x1**, **x5**, **x10** ou **MAX** (le maximum de niveaux abordables en 1 clic !).
   * Chaque virus dispose également de mini-boutons d'achat rapide individuels (`+1`, `+5`, `+10`, `MAX`) directement intégrés dans sa ligne.

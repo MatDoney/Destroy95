@@ -918,6 +918,44 @@ body.glitch-stage-apocalypse {
     cursor: pointer;
 }
 
+/* Click Summary Banner & Synergy */
+.click-summary-banner {
+    background-color: #f7f7f7;
+    border: 2px inset var(--win-dark);
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.click-summary-banner .summary-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+}
+
+.click-summary-banner .summary-label {
+    font-weight: bold;
+    color: #222222;
+}
+
+.click-summary-banner .summary-line strong {
+    color: #000080;
+    font-size: 12px;
+}
+
+.click-summary-banner .summary-sub {
+    font-size: 10px;
+    color: #444444;
+}
+
+.click-synergy-tag {
+    color: #b00000;
+    font-weight: bold;
+}
+
 /* Prestige Panel */
 .prestige-panel {
     padding: 12px;
